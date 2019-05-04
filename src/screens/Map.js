@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Config from 'react-native-config'
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import Map from '../components/map';
 
 const styles = StyleSheet.create({
   container: {
@@ -9,33 +8,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  }
 });
 
-class Map extends React.Component {
+class MapScreen extends React.Component {
   static navigationOptions = {
     header: null,
     headerMode: 'none',
   };
   
   render() {
+    const entity = {
+      coordinate: {
+        latitude: 12.931093,
+        longitude: 77.628987,
+      },
+      type: "PERSON"
+    }
+    const journey = [{entity}]
     return (
       <View style={styles.container}>
-        <MapView
-            provider={PROVIDER_GOOGLE} // remove if not using Google Maps
-            style={styles.map}
-            region={{
-              latitude: 12.931093,
-              longitude: 77.628987,
-              latitudeDelta: 0.015,
-              longitudeDelta: 0.0121,
-            }}
-        />
+        <Map journey={journey}/>
       </View>
     )
   }
 }
 
-export default Map;
+export default MapScreen;
