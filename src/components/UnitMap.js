@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import EntityMarker from './EntityMarker';
 import TimeMarker from './TimeMarker';
+import AnimatedMap from './AnimatedMap';
 
 const styles = StyleSheet.create({
   map: {
@@ -73,14 +74,13 @@ const Map = ({entities, routes, times, style}) => {
   
   const region = getRegion(coordinateExtremes);
   return (
-    <MapView
-        provider={PROVIDER_GOOGLE}
+    <AnimatedMap
         style={[styles.map, style]}
         region={region} >
       {entityMarkers}
       {routeMarkers}
       {timeMarkers}
-    </MapView>
+    </AnimatedMap>
   )
 }
 

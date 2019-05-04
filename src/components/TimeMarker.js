@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { Marker } from 'react-native-maps';
 import _ from 'lodash'
 import moment from 'moment'
+
+import AnimatedMarker from './AnimatedMarker';
 
 const styles = StyleSheet.create({
   container: {
@@ -16,11 +17,11 @@ const styles = StyleSheet.create({
 });
 
 const TimeMarker = ({ coordinate, time }) => (
-  <Marker coordinate={coordinate}>
+  <AnimatedMarker coordinate={coordinate}>
     <View style={styles.container}>
       <Text style={styles.time}>{moment(time).format("hh:mm A")}</Text>
     </View>
-  </Marker>
+  </AnimatedMarker>
 )
 
 export default TimeMarker;

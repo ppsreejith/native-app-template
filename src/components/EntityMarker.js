@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Marker } from 'react-native-maps';
+import AnimatedMarker from './AnimatedMarker';
 import _ from 'lodash'
 
 const markerSize = 13;
@@ -26,9 +26,9 @@ const CustomMarker = ({ coordinate, type }) => {
   }
   const TypedMarker = MARKER_TYPES[type];
   return (
-    <Marker coordinate={coordinate}>
+    <AnimatedMarker coordinate={coordinate}>
       <TypedMarker />
-    </Marker>
+    </AnimatedMarker>
   )
 }
 
