@@ -22,9 +22,17 @@ class MapScreen extends React.Component {
         latitude: 12.931093,
         longitude: 77.628987,
       },
-      type: "PERSON"
+      type: "PERSON",
     }
-    const journey = [{entity}]
+    const route = [{
+      latitude: 12.931093,
+      longitude: 77.628987,
+    }, {
+      latitude: 12.991093,
+      longitude: 77.828987,
+    }]
+    const key = 'lol';
+    const journey = [{entity, route, key}]
     return (
       <View style={styles.container}>
         <Map journey={journey}/>
