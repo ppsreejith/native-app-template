@@ -1,8 +1,8 @@
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
 import Home from './screens/Home';
 import About from './screens/About';
 
-export default createStackNavigator(
+const RootStack = createStackNavigator(
   {
     Home,
     About
@@ -11,3 +11,7 @@ export default createStackNavigator(
     initialRouteName: 'Home'
   }
 );
+
+const App = createAppContainer(RootStack);
+
+export default App;
