@@ -31,7 +31,7 @@ const getRegion = ({maxLat, minLat, maxLng, minLng}) => {
   }
 }
 
-const Map = ({entities, routes, times}) => {
+const Map = ({entities, routes, times, style}) => {
   const getMaxLat = getComparator(Number.NEGATIVE_INFINITY, _.gt);
   const getMaxLng = getComparator(Number.NEGATIVE_INFINITY, _.gt);
   const getMinLat = getComparator(Number.POSITIVE_INFINITY, _.lt);
@@ -75,7 +75,7 @@ const Map = ({entities, routes, times}) => {
   return (
     <MapView
         provider={PROVIDER_GOOGLE}
-        style={styles.map}
+        style={[styles.map, style]}
         region={region} >
       {entityMarkers}
       {routeMarkers}

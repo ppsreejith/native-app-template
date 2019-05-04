@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Map from '../components/Map';
+import JourneyMap from '../components/JourneyMap';
 
 const styles = StyleSheet.create({
   container: {
@@ -38,14 +38,10 @@ class MapScreen extends React.Component {
       },
       time: new Date()
     }
-    const key = 'lol';
-    const times = [time];
-    const routes = [route];
-    const entities = [entity];
-    const journey = [{entity, route, key, time}]
+    const journey = [{entity, route, time}]
     return (
       <View style={styles.container}>
-        <Map times={times} routes={routes} entities={entities} />
+        <JourneyMap journey={journey} />
       </View>
     )
   }
