@@ -3,6 +3,7 @@ package com.native_app_template;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.airbnb.android.react.maps.MapsPackage;
 import com.wix.interactable.Interactable;
 import com.github.xinthink.rnmk.ReactMaterialKitPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -26,6 +27,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new MapsPackage(),
             new Interactable(),
             new ReactMaterialKitPackage(),
             new RNGestureHandlerPackage()
