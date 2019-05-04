@@ -1,9 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Polyline, Marker } from 'react-native-maps';
 import _ from 'lodash';
 
-import Marker from './marker';
+import EntityMarker from './EntityMarker';
+import TimeMarker from './TimeMarker';
 
 const styles = StyleSheet.create({
   map: {
@@ -30,31 +31,37 @@ const getRegion = ({maxLat, minLat, maxLng, minLng}) => {
   }
 }
 
-const Map = ({journey}) => {
+const Map = ({entities, routes, times}) => {
   const getMaxLat = getComparator(Number.NEGATIVE_INFINITY, _.gt);
   const getMaxLng = getComparator(Number.NEGATIVE_INFINITY, _.gt);
   const getMinLat = getComparator(Number.POSITIVE_INFINITY, _.lt);
   const getMinLng = getComparator(Number.POSITIVE_INFINITY, _.lt);
+  const getMinMax = (coordinate) => {
+    getMaxLat(coordinate.latitude)
+    getMinLat(coordinate.latitude)
+    getMaxLng(coordinate.longitude)
+    getMinLng(coordinate.longitude)
+  }
   
-  const markers = _.map(journey, ({entity, key}) => {
-    return (
-      <Marker key={key} {...entity} />
-    );
-  })
-  const routes = _.map(journey, ({route, key}) => (
-    <Polyline
-        key={key}
-        coordinates={route}/>
-  ))
-  _.each(journey, ({entity, route}) => {
-    const getMinMax = (coordinate) => {
-      getMaxLat(coordinate.latitude)
-      getMinLat(coordinate.latitude)
-      getMaxLng(coordinate.longitude)
-      getMinLng(coordinate.longitude)
-    }
-    _.each(route, getMinMax);
+  const entityMarkers = _.map(entities, (entity, key) => {
     getMinMax(entity.coordinate);
+    return (
+      <EntityMarker key={key} {...entity} />
+    );
+  });
+  const routeMarkers = _.map(routes, (route, key) => {
+    _.each(route, getMinMax);    
+    return (
+      <Polyline
+          key={key}
+          coordinates={route}/>
+    )
+  });
+  const timeMarkers = _.map(times, (time, key) => {
+    getMinMax(time.coordinate);
+    return (
+      <TimeMarker key={key} {...time} />
+    )
   });
 
   const coordinateExtremes = {
@@ -62,15 +69,17 @@ const Map = ({journey}) => {
     minLat: getMinLat(),
     maxLng: getMaxLng(),
     minLng: getMinLng(),
-  }
+  };
+  
   const region = getRegion(coordinateExtremes);
   return (
     <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         region={region} >
-      {markers}
-      {routes}
+      {entityMarkers}
+      {routeMarkers}
+      {timeMarkers}
     </MapView>
   )
 }

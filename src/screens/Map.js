@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Map from '../components/map';
+import Map from '../components/Map';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,11 +31,21 @@ class MapScreen extends React.Component {
       latitude: 12.991093,
       longitude: 77.828987,
     }]
+    const time = {
+      coordinate: {
+        latitude: 12.991093,
+        longitude: 77.828987,
+      },
+      time: new Date()
+    }
     const key = 'lol';
-    const journey = [{entity, route, key}]
+    const times = [time];
+    const routes = [route];
+    const entities = [entity];
+    const journey = [{entity, route, key, time}]
     return (
       <View style={styles.container}>
-        <Map journey={journey}/>
+        <Map times={times} routes={routes} entities={entities} />
       </View>
     )
   }
