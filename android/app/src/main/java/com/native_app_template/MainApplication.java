@@ -3,6 +3,7 @@ package com.native_app_template;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.wix.interactable.Interactable;
 import com.github.xinthink.rnmk.ReactMaterialKitPackage;
@@ -27,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactNativeConfigPackage(),
             new MapsPackage(),
             new Interactable(),
             new ReactMaterialKitPackage(),
