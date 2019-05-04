@@ -15,9 +15,9 @@ class MapScreen extends React.Component {
     header: null,
     headerMode: 'none',
   };
-  
-  render() {
-    const journey = [
+
+  state = {
+    journey: [
       {
         entity: {
           coordinate: {
@@ -41,10 +41,13 @@ class MapScreen extends React.Component {
           time: new Date()
         }
       }
-    ];
+    ]
+  }
+  
+  render() {
     return (
       <View style={styles.container}>
-        <JourneyMap journey={journey} />
+        <JourneyMap journey={this.state.journey} />
       </View>
     )
   }
