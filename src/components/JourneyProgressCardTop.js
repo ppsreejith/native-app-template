@@ -5,12 +5,13 @@ import Carousel from 'react-native-snap-carousel';
 // import { JOURNEYS } from '../static/journeys';
 // import console = require('console');
 import { Icon } from 'react-native-elements'
+// import console = require('console');
 
 const styles = {
   container: {
     // flex: 1,
     backgroundColor: 'transparent',
-    bottom: 30,
+    top: 5,
     position: 'absolute',
     flexGrow: 0
   },
@@ -19,14 +20,10 @@ const styles = {
     backgroundColor: 'transparent',
   },
   slide: {
-    backgroundColor: '#fff',
+    backgroundColor: '#333',
     // height: 250,
     borderRadius: 10,
-    // padding: 20,
-    shadowColor: '#333',
-    shadowOpacity: 0.8,
-    shadowOffset: { width: 0, height: 0 },
-    shadowRadius: 5
+    padding: 0,
   },
   rowDiv: {
     flex: 1,
@@ -40,8 +37,8 @@ const styles = {
     alignItems: 'center'
   },
   modeImgs: {
-    width: 30,
-    height: 30
+    width: 20,
+    height: 20
   },
   modeImgsView: {
     padding: 10,
@@ -49,7 +46,7 @@ const styles = {
     borderRadius: 25
   },
   outerCircle: {
-    padding: 10,
+    padding: 5,
     // margin: 5,
     borderRadius: 35
   },
@@ -73,11 +70,17 @@ const styles = {
 }
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
-export class JourneyCard extends React.Component {
-  state = {
-    journeys: this.props.journeys
-  }
+export class JourneyProgressCardTop extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      journey: this.props.journey,
+      currentLeg: this.props.currentLeg[0]
+    }
+    
+    this._renderItem = this._renderItem.bind(this);
 
+  }
   _renderItem({ item, index }) {
     const totalDistance = _.reduce(_.map(item.journey, ({ entity }) => entity.distance), (sum, n)=>sum + n, 0);
     const totalFare = _.reduce(_.map(item.journey, ({ entity }) => entity.fare), (sum, n)=>sum + n, 0);
@@ -88,20 +91,24 @@ export class JourneyCard extends React.Component {
       var img = '';
       var ringColor = '';
 
-      if (entity.type === 'PERSON') {
-        img = <View style={styles.modeImgsView}><Image source={require('../assets/PERSON.png')} style={styles.modeImgs} /></View>;
-      } else if (entity.type === 'BUS') {
-        img = <View style={styles.modeImgsView}><Image source={require('../assets/BUS.png')} style={styles.modeImgs} /></View>;
-      } else if (entity.type === 'AUTO') {
-        img = <View style={styles.modeImgsView}><Image source={require('../assets/AUTO.png')} style={styles.modeImgs} /></View>;
-      }
-
-      if ((entity.occupancy === 'NONE') || (entity.occupancy === 'HIGH')) {
+      if (id<this.state.currentLeg.journeyLegCurrentId){
+        ringColor = '#000';
+        backgroundColor = '#000';
+      } else if (id===this.state.currentLeg.journeyLegCurrentId){
         ringColor = '#27ae60';
-      } else if (entity.occupancy === 'MID') {
-        ringColor = '#f1c40f';
-      } else if (entity.occupancy === 'LOW') {
-        ringColor = '#c0392b';
+        backgroundColor='#eee';
+      } else {
+        ringColor = '#333';
+        backgroundColor = '#eee';
+      }
+      console.log(id, this.state.currentLeg.journeyLegCurrentId, ringColor);
+
+      if (entity.type === 'PERSON') {
+        img = <View style={[styles.modeImgsView,{backgroundColor:backgroundColor}]}><Image source={require('../assets/PERSON.png')} style={[styles.modeImgs]}/></View>;
+      } else if (entity.type === 'BUS') {
+        img = <View style={[styles.modeImgsView,{backgroundColor:backgroundColor}]}><Image source={require('../assets/BUS.png')} style={[styles.modeImgs]}/></View>;
+      } else if (entity.type === 'AUTO') {
+        img = <View style={[styles.modeImgsView,{backgroundColor:backgroundColor}]}><Image source={require('../assets/AUTO.png')} style={[styles.modeImgs]}/></View>;
       }
 
 
@@ -111,35 +118,15 @@ export class JourneyCard extends React.Component {
       return (
         <View key={id} style={styles.colDiv}>
           {/* <View style={[styles.outerCircle, { backgroundColor: ringColor }]}> */}
-          <View style={[styles.outerCircle, { backgroundColor: '#eee', position:'relative' }]}>
+          <View style={[styles.outerCircle, { backgroundColor: ringColor, position:'relative' }]}>
             {img}
-            <View style={{position:'absolute', height: 17, width: 17, backgroundColor: ringColor,right: 0, borderRadius: 10}}></View>
-            <Text style={{position:'absolute', height: 20, width: 70, backgroundColor:'#333',bottom:-5,left:0, borderRadius: 5, textAlign: 'center', color: '#fff'}}>₹{entity.fare}</Text>
           </View>
-          <Text style={{fontWeight: '800', paddingTop: 5, fontSize: 12}}>{entity.time} mins</Text>
         </View>)
     });
 
-
     return (
       <View style={styles.slide}>
-        <Text style={styles.title}>Journey {index + 1} : {item.title}</Text>
-        <View style={[styles.rowDiv, { backgroundColor: '#555', padding: 5 }]}>
-          <View style={[styles.rowDiv, styles.chip]}>
-            <Icon name='clock-outline' type='material-community' color='#fff' />
-            <Text style={styles.subtitle}> {totalTime} Mins</Text>
-          </View>
-          <View style={[styles.rowDiv,styles.chip]}>
-            <Icon name='map-marker-path' type='material-community' color='#fff' />
-            <Text style={styles.subtitle}> {totalDistance} KMs</Text>
-          </View>
-          <View style={[styles.rowDiv,styles.chip]}>
-            <Icon name='currency-inr' type='material-community' color='#fff' />
-            <Text style={styles.subtitle}>{totalFare} Rs</Text>
-          </View>
-          
-        </View>
-        <View style={[styles.rowDiv, { padding: 10 }]}>
+        <View style={[styles.rowDiv, { padding: 7 }]}>
           {modes}
         </View>
       </View>
@@ -152,12 +139,12 @@ export class JourneyCard extends React.Component {
         containerCustomStyle={styles.container}
         contentContainerCustomStyle={styles.slides}
         ref={(c) => { this._carousel = c; }}
-        data={this.state.journeys}
+        data={this.state.journey}
         renderItem={this._renderItem}
         sliderWidth={viewportWidth}
         //   sliderHeight={400}
 
-        itemWidth={viewportWidth - 100}
+        itemWidth={viewportWidth - 25}
       //   itemHeight={200}
       />
     );

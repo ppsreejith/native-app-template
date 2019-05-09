@@ -66,7 +66,7 @@ export class SettingsView extends React.Component {
             <Text style={styles.heading}>Bus Preference</Text>
             <View style={[styles.rowDiv, { flex: 0, marginTop: 10 }]}>
               <CheckBox
-                checkedColor={'#2980b9'}
+                checkedColor={'#333'}
                 title='AC'
                 size={18}
                 containerStyle={styles.checkbox}
@@ -75,7 +75,7 @@ export class SettingsView extends React.Component {
                 onPress={() => this.setState({ busPrefAC: !this.state.busPrefAC })} />
 
               <CheckBox
-                checkedColor={'#2980b9'}
+                checkedColor={'#333'}
                 title='Express' size={18}
                 containerStyle={styles.checkbox}
                 textStyle={{ fontWeight: '100' }}
@@ -83,7 +83,7 @@ export class SettingsView extends React.Component {
                 onPress={() => this.setState({ busPrefEXPRESS: !this.state.busPrefEXPRESS })} />
 
               <CheckBox
-                checkedColor={'#2980b9'}
+                checkedColor={'#333'}
                 title='Local'
                 size={18}
                 containerStyle={styles.checkbox}
@@ -98,8 +98,8 @@ export class SettingsView extends React.Component {
             <Text style={[styles.heading, { marginRight: 10 }]}>Auto book Auto-Rickshaw</Text>
             <Switch
               value={this.state.autoBookAuto}
-              trackColor={{ true: "#2980b9", false: '#aaa' }}
-              thumbColor={'#2980b9'}
+              trackColor={{ true: "#333", false: '#aaa' }}
+              thumbColor={'#333'}
               onValueChange={() => this.setState({ autoBookAuto: !this.state.autoBookAuto })} />
           </View>
 
@@ -112,9 +112,9 @@ export class SettingsView extends React.Component {
               value={this.state.maxWalkingValue}
               maximumValue={3}
               minimumValue={0}
-              minimumTrackTintColor={'#2980b9'}
+              minimumTrackTintColor={'#333'}
               maximumTrackTintColor={'#aaa'}
-              thumbTintColor={'#2980b9'}
+              thumbTintColor={'#333'}
               onValueChange={maxWalkingValue => this.setState({ maxWalkingValue })}
             />
           </View>
@@ -134,7 +134,7 @@ export class SettingsView extends React.Component {
         <View>
           <Button
             title="Apply Changes"
-            color="#2980b9"
+            color="#333"
           />
         </View>
       </View>
