@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import AnimatedMarker from './AnimatedMarker';
 import _ from 'lodash'
+import { Image } from 'react-native';
+
 
 const markerSize = 13;
 
@@ -17,7 +19,13 @@ const styles = StyleSheet.create({
 });
 
 const MARKER_TYPES = {
-  PERSON: () =>  <View style={styles.myLocation}></View>
+  // PERSON: () =>  <View style={styles.myLocation}></View>
+  PERSON: () => <Image source={require('../assets/PERSON_MARKER.png')} style={{ width: 30, height: 30 }}/>,
+  HOME: () => <Image source={require('../assets/home.png')} style={{ width: 30, height: 30 }}/>,
+  STOP: () => <Image source={require('../assets/marker.png')} style={{ width: 30, height: 30 }}/>,
+  DESTINATION: () => <Image source={require('../assets/flag.png')} style={{ width: 30, height: 30 }}/>,
+  BUS: () => <Image source={require('../assets/BUS_MARKER.png')} style={{ width: 30, height: 30 }}/>,
+  AUTO: () => <Image source={require('../assets/AUTO_MARKER.png')} style={{ width: 30, height: 30 }}/>
 }
 
 const CustomMarker = ({ coordinate, type }) => {

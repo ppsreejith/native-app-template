@@ -7,7 +7,7 @@ export const JOURNEYS = [{
           latitude: 12.931093,
           longitude: 77.628987,
         },
-        type: "PERSON",
+        type: "HOME",
         occupancy: "NONE",
         distance: 0.3,
         fare: 0,

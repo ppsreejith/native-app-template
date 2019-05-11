@@ -94,6 +94,11 @@ export class JourneyCard extends React.Component {
       var img = '';
       var ringColor = '';
 
+      if ((entity.type=='HOME')|| (entity.type=='DESTINATION')|| (entity.type=='STOP')){
+        return;
+      }
+
+
       if (entity.type === 'PERSON') {
         img = <View style={styles.modeImgsView}><Image source={require('../assets/PERSON.png')} style={styles.modeImgs} /></View>;
       } else if (entity.type === 'BUS') {

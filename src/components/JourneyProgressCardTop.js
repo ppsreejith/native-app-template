@@ -89,6 +89,9 @@ export class JourneyProgressCardTop extends React.Component {
     const modes = _.map(item.journey, ({ entity }, id) => {
       var img = '';
       var ringColor = '';
+      if ((entity.type=='HOME')|| (entity.type=='DESTINATION')|| (entity.type=='STOP')){
+        return;
+      }
 
       if (id<this.state.journey[0].journeyLegCurrentId){
         ringColor = '#000';
