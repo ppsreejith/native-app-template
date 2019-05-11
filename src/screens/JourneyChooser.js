@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import { StyleSheet, Text, View } from 'react-native';
 import JourneyMap from '../components/JourneyMap';
 import { JourneyCard } from '../components/JourneyCard';
@@ -28,6 +29,12 @@ class JourneyChooserScreen extends React.Component {
 
   constructor(props) {
     super(props);
+    /* this.props.dispatch({
+     *   type: JOURNEY_UPDATE_LEG,
+     *   payload: {
+     *     leg: 3
+     *   }
+     * })*/
     this.state = {
       isVisible: false,
       journey: [
@@ -93,4 +100,4 @@ class JourneyChooserScreen extends React.Component {
   }
 }
 
-export default JourneyChooserScreen;
+export default connect(({journey}) => ({journey}))(JourneyChooserScreen);

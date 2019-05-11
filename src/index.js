@@ -16,7 +16,7 @@ const RootStack = createStackNavigator(
     BookingComplete,
   },
   {
-    initialRouteName: 'JourneyChooser'
+    initialRouteName: 'JourneyProgress'
   }
 );
 
