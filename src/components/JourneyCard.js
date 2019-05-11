@@ -81,93 +81,87 @@ export class JourneyCard extends React.Component {
       isVisible: false,
       journeys: this.props.journeys
     }
-    this._renderItem = this._renderItem.bind(this);
   }
 
-  _renderItem({ item, index }) {
-    const totalDistance = _.reduce(_.map(item.journey, ({ entity }) => entity.distance), (sum, n)=>sum + n, 0);
-    const totalFare = _.reduce(_.map(item.journey, ({ entity }) => entity.fare), (sum, n)=>sum + n, 0);
-    const totalTime = _.reduce(_.map(item.journey, ({ entity }) => entity.time), (sum, n)=>sum + n, 0);
-    // console.log(item.title, );
+  _renderItem(self) {
+    return ({ item, index }) => {
+      const totalDistance = _.reduce(_.map(item.journey, ({ entity }) => entity.distance), (sum, n)=>sum + n, 0);
+      const totalFare = _.reduce(_.map(item.journey, ({ entity }) => entity.fare), (sum, n)=>sum + n, 0);
+      const totalTime = _.reduce(_.map(item.journey, ({ entity }) => entity.time), (sum, n)=>sum + n, 0);
 
-    const modes = _.map(item.journey, ({ entity }, id) => {
-      var img = '';
-      var ringColor = '';
+      const modes = _.map(item.journey, ({ entity }, id) => {
+        var img = '';
+        var ringColor = '';
 
-      if ((entity.type=='HOME')|| (entity.type=='DESTINATION')|| (entity.type=='STOP')){
-        return;
-      }
+        if ((entity.type=='HOME')|| (entity.type=='DESTINATION')|| (entity.type=='STOP')){
+          return;
+        }
 
+        if (entity.type === 'PERSON') {
+          img = <View style={styles.modeImgsView}><Image source={require('../assets/PERSON.png')} style={styles.modeImgs} /></View>;
+        } else if (entity.type === 'BUS') {
+          img = <View style={styles.modeImgsView}><Image source={require('../assets/BUS.png')} style={styles.modeImgs} /></View>;
+        } else if (entity.type === 'AUTO') {
+          img = <View style={styles.modeImgsView}><Image source={require('../assets/AUTO.png')} style={styles.modeImgs} /></View>;
+        }
 
-      if (entity.type === 'PERSON') {
-        img = <View style={styles.modeImgsView}><Image source={require('../assets/PERSON.png')} style={styles.modeImgs} /></View>;
-      } else if (entity.type === 'BUS') {
-        img = <View style={styles.modeImgsView}><Image source={require('../assets/BUS.png')} style={styles.modeImgs} /></View>;
-      } else if (entity.type === 'AUTO') {
-        img = <View style={styles.modeImgsView}><Image source={require('../assets/AUTO.png')} style={styles.modeImgs} /></View>;
-      }
+        if ((entity.occupancy === 'NONE') || (entity.occupancy === 'HIGH')) {
+          ringColor = '#27ae60';
+        } else if (entity.occupancy === 'MID') {
+          ringColor = '#f1c40f';
+        } else if (entity.occupancy === 'LOW') {
+          ringColor = '#c0392b';
+        }
 
-      if ((entity.occupancy === 'NONE') || (entity.occupancy === 'HIGH')) {
-        ringColor = '#27ae60';
-      } else if (entity.occupancy === 'MID') {
-        ringColor = '#f1c40f';
-      } else if (entity.occupancy === 'LOW') {
-        ringColor = '#c0392b';
-      }
+        return (
+          <View key={id} style={styles.colDiv}>
+            {/* <View style={[styles.outerCircle, { backgroundColor: ringColor }]}> */}
+            <View style={[styles.outerCircle, { backgroundColor: '#eee', position:'relative' }]}>
+              {img}
+              <View style={{position:'absolute', height: 17, width: 17, backgroundColor: ringColor,right: 0, borderRadius: 10}}></View>
+              <Text style={{position:'absolute', height: 20, width: 70, backgroundColor:'#333',bottom:-5,left:0, borderRadius: 5, textAlign: 'center', color: '#fff'}}>₹{entity.fare}</Text>
+            </View>
+            <Text style={{fontWeight: '800', paddingTop: 5, fontSize: 12}}>{entity.time} mins</Text>
+          </View>)
+      });
 
-
-
-
-      // console.log(entity.type, img);
       return (
-        <View key={id} style={styles.colDiv}>
-          {/* <View style={[styles.outerCircle, { backgroundColor: ringColor }]}> */}
-          <View style={[styles.outerCircle, { backgroundColor: '#eee', position:'relative' }]}>
-            {img}
-            <View style={{position:'absolute', height: 17, width: 17, backgroundColor: ringColor,right: 0, borderRadius: 10}}></View>
-            <Text style={{position:'absolute', height: 20, width: 70, backgroundColor:'#333',bottom:-5,left:0, borderRadius: 5, textAlign: 'center', color: '#fff'}}>₹{entity.fare}</Text>
+        <View style={styles.slide}>
+          <View style={[styles.rowDiv,{paddingRight: 10}]}>
+            <Text style={styles.title}>Journey {index + 1} : {item.title}</Text>
+            <Icon name='information' type='material-community' color='#333' onPress={()=>{
+                console.log('i clicked');
+                self.setState({isVisible: true})
+              }}/>
+            <Overlay
+                isVisible={self.state.isVisible}
+                onBackdropPress={() => self.setState({ isVisible: false })}
+                overlayStyle={{justifyContent:'center', alignItems:'center'}}
+            >
+              <Image source={require('../assets/yo.jpg')} style={{height:400, width:250}} />
+            </Overlay>
           </View>
-          <Text style={{fontWeight: '800', paddingTop: 5, fontSize: 12}}>{entity.time} mins</Text>
-        </View>)
-    });
-
-
-    return (
-      <View style={styles.slide}>
-        <View style={[styles.rowDiv,{paddingRight: 10}]}>
-        <Text style={styles.title}>Journey {index + 1} : {item.title}</Text>
-        <Icon name='information' type='material-community' color='#333' onPress={()=>{
-          console.log('i clicked');
-          this.setState({isVisible: true})
-        }}/>
-        <Overlay
-          isVisible={this.state.isVisible}
-          onBackdropPress={() => this.setState({ isVisible: false })}
-          overlayStyle={{justifyContent:'center', alignItems:'center'}}
-        >
-          <Image source={require('../assets/yo.jpg')} style={{height:400, width:250}} />
-        </Overlay>
+          <View style={[styles.rowDiv, { backgroundColor: '#555', padding: 5 }]}>
+            <View style={[styles.rowDiv, styles.chip]}>
+              <Icon name='clock-outline' type='material-community' color='#fff' />
+              <Text style={styles.subtitle}> {totalTime} Mins</Text>
+            </View>
+            <View style={[styles.rowDiv,styles.chip]}>
+              <Icon name='map-marker-path' type='material-community' color='#fff' />
+              <Text style={styles.subtitle}> {totalDistance} KMs</Text>
+            </View>
+            <View style={[styles.rowDiv,styles.chip]}>
+              <Icon name='currency-inr' type='material-community' color='#fff' />
+              <Text style={styles.subtitle}>{totalFare} Rs</Text>
+            </View>
+            
+          </View>
+          <View style={[styles.rowDiv, { padding: 10 }]}>
+            {modes}
+          </View>
         </View>
-        <View style={[styles.rowDiv, { backgroundColor: '#555', padding: 5 }]}>
-          <View style={[styles.rowDiv, styles.chip]}>
-            <Icon name='clock-outline' type='material-community' color='#fff' />
-            <Text style={styles.subtitle}> {totalTime} Mins</Text>
-          </View>
-          <View style={[styles.rowDiv,styles.chip]}>
-            <Icon name='map-marker-path' type='material-community' color='#fff' />
-            <Text style={styles.subtitle}> {totalDistance} KMs</Text>
-          </View>
-          <View style={[styles.rowDiv,styles.chip]}>
-            <Icon name='currency-inr' type='material-community' color='#fff' />
-            <Text style={styles.subtitle}>{totalFare} Rs</Text>
-          </View>
-          
-        </View>
-        <View style={[styles.rowDiv, { padding: 10 }]}>
-          {modes}
-        </View>
-      </View>
-    );
+      );
+    }
   }
 
   render() {
@@ -177,7 +171,7 @@ export class JourneyCard extends React.Component {
         contentContainerCustomStyle={styles.slides}
         ref={(c) => { this._carousel = c; }}
         data={this.state.journeys}
-        renderItem={this._renderItem}
+        renderItem={this._renderItem(this)}
         sliderWidth={viewportWidth}
         //   sliderHeight={400}
 
