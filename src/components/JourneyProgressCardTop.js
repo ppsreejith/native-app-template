@@ -75,7 +75,6 @@ export class JourneyProgressCardTop extends React.Component {
     super(props);
     this.state = {
       journey: this.props.journey,
-      currentLeg: this.props.currentLeg[0]
     }
     
     this._renderItem = this._renderItem.bind(this);
@@ -91,17 +90,17 @@ export class JourneyProgressCardTop extends React.Component {
       var img = '';
       var ringColor = '';
 
-      if (id<this.state.currentLeg.journeyLegCurrentId){
+      if (id<this.state.journey[0].journeyLegCurrentId){
         ringColor = '#000';
         backgroundColor = '#000';
-      } else if (id===this.state.currentLeg.journeyLegCurrentId){
+      } else if (id===this.state.journey[0].journeyLegCurrentId){
         ringColor = '#27ae60';
         backgroundColor='#eee';
       } else {
         ringColor = '#333';
         backgroundColor = '#eee';
       }
-      console.log(id, this.state.currentLeg.journeyLegCurrentId, ringColor);
+      console.log(id, this.state.journey[0].journeyLegCurrentId, ringColor);
 
       if (entity.type === 'PERSON') {
         img = <View style={[styles.modeImgsView,{backgroundColor:backgroundColor}]}><Image source={require('../assets/PERSON.png')} style={[styles.modeImgs]}/></View>;

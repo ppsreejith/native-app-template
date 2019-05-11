@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Animated, Button, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Animated, Dimensions } from 'react-native';
 import _ from 'lodash';
 import Carousel from 'react-native-snap-carousel';
 // import { JOURNEYS } from '../static/journeys';
 // import console = require('console');
-import { Icon } from 'react-native-elements'
+import { Icon, Button, Overlay } from 'react-native-elements'
+// import console = require('console');
 
 const styles = {
   container: {
@@ -74,8 +75,13 @@ const styles = {
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
 export class JourneyCard extends React.Component {
-  state = {
-    journeys: this.props.journeys
+  constructor(props) {
+    super(props);
+    this.state = {
+      isVisible: false,
+      journeys: this.props.journeys
+    }
+    this._renderItem = this._renderItem.bind(this);
   }
 
   _renderItem({ item, index }) {
@@ -123,7 +129,20 @@ export class JourneyCard extends React.Component {
 
     return (
       <View style={styles.slide}>
+        <View style={[styles.rowDiv,{paddingRight: 10}]}>
         <Text style={styles.title}>Journey {index + 1} : {item.title}</Text>
+        <Icon name='information' type='material-community' color='#333' onPress={()=>{
+          console.log('i clicked');
+          this.setState({isVisible: true})
+        }}/>
+        <Overlay
+          isVisible={this.state.isVisible}
+          onBackdropPress={() => this.setState({ isVisible: false })}
+          overlayStyle={{justifyContent:'center', alignItems:'center'}}
+        >
+          <Image source={require('../assets/yo.jpg')} style={{height:400, width:250}} />
+        </Overlay>
+        </View>
         <View style={[styles.rowDiv, { backgroundColor: '#555', padding: 5 }]}>
           <View style={[styles.rowDiv, styles.chip]}>
             <Icon name='clock-outline' type='material-community' color='#fff' />

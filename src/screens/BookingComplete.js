@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import JourneyMap from '../components/JourneyMap';
-import { JourneyProgressCardTop } from '../components/JourneyProgressCardTop';
-import { JourneyProgressCardBottom } from '../components/JourneyProgressCardBottom';
+import { JourneyCompleteCard } from '../components/JourneyCompleteCard';
 import { SettingsView } from '../components/SettingsView';
 import { CURRRENT_JOURNEY} from '../static/journeys';
 import { Icon, Overlay, Button } from 'react-native-elements'
@@ -21,7 +20,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class JourneyProgressScreen extends React.Component {
+class BookingCompleteScreen extends React.Component {
   static navigationOptions = {
     header: null,
     headerMode: 'none',
@@ -64,11 +63,10 @@ class JourneyProgressScreen extends React.Component {
     return (
       <View style={styles.container}>
         <JourneyMap journey={this.state.journey} />
-        <JourneyProgressCardTop journey={CURRRENT_JOURNEY}/>
-        <JourneyProgressCardBottom journey = {CURRRENT_JOURNEY}/>
+        <JourneyCompleteCard journey = {CURRRENT_JOURNEY}/>
       </View>
     )
   }
 }
 
-export default JourneyProgressScreen;
+export default BookingCompleteScreen;

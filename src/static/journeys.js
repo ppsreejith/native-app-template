@@ -260,6 +260,7 @@ export const JOURNEYS = [{
 
 export const CURRRENT_JOURNEY = [{
   title: "Optimized for Time",
+  journeyLegCurrentId: 1,
   journey: [
     {
       entity: {
@@ -271,7 +272,9 @@ export const CURRRENT_JOURNEY = [{
         occupancy: "NONE",
         distance: 0.3,
         fare: 0,
-        time: 15
+        time: 15,
+        from: 'Yelachenahalli Metro Station Bangalore',
+        to: 'Indiranagar Metro Station' 
       },
       route: [{
         latitude: 12.931093,
@@ -298,7 +301,11 @@ export const CURRRENT_JOURNEY = [{
         occupancy: "LOW",
         distance: 4,
         fare: 20,
-        time: 18
+        time: 18,
+        from: 'Yelachenahalli Metro Station Bangalore',
+        to: 'Indiranagar Metro Station',
+        busNo:'214E',
+        vehicleNo:'KA05 E345'
       },
       route: [{
         latitude: 12.931093,
@@ -325,7 +332,12 @@ export const CURRRENT_JOURNEY = [{
         occupancy: "NONE",
         distance: 2,
         fare: 26,
-        time: 10
+        time: 10,
+        from: 'Yelachenahalli Metro Station Bangalore',
+        to: 'Indiranagar Metro Station',
+        vehicleNo:'KA05 E345',
+        driverName:'Pluto',
+        OTP : '12345'
       },
       route: [{
         latitude: 12.931093,
@@ -345,64 +357,3 @@ export const CURRRENT_JOURNEY = [{
   ]
 }];
 
-export const CURRRENT_LEG = [{
-  journeyLegCurrentId: 1,
-  journeyLegCurrent: {
-    entity: {
-      coordinate: {
-        latitude: 12.931093,
-        longitude: 77.628987,
-      },
-      type: "BUS",
-      occupancy: "LOW",
-      distance: 4,
-      fare: 20,
-      time: 18,
-      from: 'Yelachenahalli Metro Station',
-      to: 'Indiranagar Metro Station'
-    },
-    route: [{
-      latitude: 12.931093,
-      longitude: 77.628987,
-    }, {
-      latitude: 12.991093,
-      longitude: 77.828987,
-    }],
-    time: {
-      coordinate: {
-        latitude: 12.991093,
-        longitude: 77.828987,
-      },
-      time: new Date()
-    }
-  },
-  journeyLegNext: {
-    entity: {
-      coordinate: {
-        latitude: 12.931093,
-        longitude: 77.628987,
-      },
-      type: "AUTO",
-      occupancy: "NONE",
-      distance: 2,
-      fare: 26,
-      time: 10,
-      from: 'YOLO Metro Station',
-      to: 'LOLO Metro Station'
-    },
-    route: [{
-      latitude: 12.931093,
-      longitude: 77.628987,
-    }, {
-      latitude: 12.991093,
-      longitude: 77.828987,
-    }],
-    time: {
-      coordinate: {
-        latitude: 12.991093,
-        longitude: 77.828987,
-      },
-      time: new Date()
-    }
-  }
-}];

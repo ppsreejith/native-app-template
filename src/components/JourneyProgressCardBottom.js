@@ -1,11 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Animated, Button, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Animated, Dimensions } from 'react-native';
 import _ from 'lodash';
 import Carousel from 'react-native-snap-carousel';
 // import { JOURNEYS } from '../static/journeys';
-// import console = require('console');
-import { Icon } from 'react-native-elements'
-// import console = require('console');
+import { Icon, Button } from 'react-native-elements';
 
 const styles = {
   container: {
@@ -45,14 +43,17 @@ const styles = {
   },
   modeImgsView: {
     padding: 20,
-    margin: 10,
-    justifyContent:'center',
-    flexDirection: 'row',
+    paddingRight: 10,
+    paddingLeft: 10,
+    margin: 0,
+    flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: '#eee',
     borderRadius: 50,
     borderWidth: 1,
-    borderColor: '#eee'
+    borderColor: '#eee',
+    justifyContent: 'space-between',
+    height: '100%'
   },
   outerCircle: {
     padding: 5,
@@ -76,7 +77,7 @@ const styles = {
     paddingLeft: 7,
     paddingRight: 7,
   },
-  qText:{
+  qText: {
     fontWeight: '800'
   }
 
@@ -87,7 +88,7 @@ export class JourneyProgressCardBottom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentLeg: this.props.currentLeg
+      journey: this.props.journey
     }
 
     this._renderItem = this._renderItem.bind(this);
@@ -97,47 +98,90 @@ export class JourneyProgressCardBottom extends React.Component {
     // console.log(item.title, );
 
     var img = '';
+    // const legId = item.journeyLegCurrentId;
+    const legId = 1;
 
-    if (item.journeyLegCurrent.entity.type === 'PERSON') {
-      img = <View style={[styles.modeImgsView]}><Image source={require('../assets/PERSON.png')} style={[styles.modeImgs]} /></View>;
-    } else if (item.journeyLegCurrent.entity.type === 'BUS') {
-      img = <View style={[styles.modeImgsView]}><Image source={require('../assets/BUS.png')} style={[styles.modeImgs]} /></View>;
-    } else if (item.journeyLegCurrent.entity.type === 'AUTO') {
-      img = <View style={[styles.modeImgsView]}><Image source={require('../assets/AUTO.png')} style={[styles.modeImgs]} /></View>;
+    console.log(legId);
+
+    if (item.journey[legId].entity.type === 'PERSON') {
+      img = (<View style={[styles.modeImgsView]}>
+        <Image source={require('../assets/PERSON.png')} style={[styles.modeImgs]} />
+      </View>);
+      var actionButtons = (<View style={[{ alignItems: 'stretch', justifyContent: 'space-between', flexDirection: 'row', width: '100%', paddingTop: 10 }]}>
+      </View>)
+      var finalActionButtons = (<View style={[styles.rowDiv, { padding: 10, paddingTop: 0 }]}>
+        <Button title='Navigate' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
+        <Button title='Finished Leg' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
+      </View>)
     }
 
-  return (
-    <View style={styles.slide}>
-      <View style={[styles.rowDiv, { margin: 10, backgroundColor: '#eee', borderRadius: 5 }]}>
-        {img}
-        <View style={[styles.colDiv,{borderLeftColor:'#ddd',borderLeftWidth:1, padding: 10}]}>
-          <View style={[styles.colDiv,{justifyContent:'center',alignItems:'flex-start',width:'100%'}]}>
-          <Text><Text style={styles.qText}>From : </Text>{item.journeyLegCurrent.entity.from}</Text>
-          <Text><Text style={styles.qText}>To : </Text>{item.journeyLegCurrent.entity.to}</Text>
-          </View>
-          <View style={[styles.rowDiv,{justifyContent:'space-between',width:'100%'}]}>
-          <View style={[styles.rowDiv, styles.chip]}>
-            <Icon name='clock-outline' type='material-community' color='#000' />
-            <Text style={styles.subtitle}> {item.journeyLegCurrent.entity.time} Mins</Text>
-          </View>
-          <View style={[styles.rowDiv,styles.chip]}>
-            <Icon name='map-marker-path' type='material-community' color='#000' />
-            <Text style={styles.subtitle}> {item.journeyLegCurrent.entity.distance} KMs</Text>
-          </View>
-          <View style={[styles.rowDiv,styles.chip]}>
-            <Icon name='currency-inr' type='material-community' color='#000' />
-            <Text style={styles.subtitle}>{item.journeyLegCurrent.entity.fare} Rs</Text>
-          </View>
-          </View>
-          
-        </View>
-      </View>
 
-      <View style={{ padding: 10, paddingTop: 0}}>
-        <Button color='#333' title='Finished Leg'/>
+
+    else if (item.journey[legId].entity.type === 'BUS') {
+      img = (<View style={[styles.modeImgsView]}>
+        <Text style={{ fontWeight: '800', fontSize: 20 }}>{item.journey[legId].entity.busNo}</Text>
+        <Image source={require('../assets/BUS.png')} style={[styles.modeImgs]} />
+        <Text style={{ fontSize: 10 }}>{item.journey[legId].entity.vehicleNo}</Text>
+      </View>);
+      var actionButtons = (<View style={[{ alignItems: 'stretch', justifyContent: 'space-between', flexDirection: 'row', width: '100%', paddingTop: 10 }]}>
+        <Button title='Pay' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
+      </View>)
+      var finalActionButtons = (<View style={[styles.rowDiv, { padding: 10, paddingTop: 0 }]}>
+        <Button title='Navigate' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
+        <Button title='Finished Leg' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
+      </View>)
+    }
+
+
+    else if (item.journey[legId].entity.type === 'AUTO') {
+      img = (<View style={[styles.modeImgsView]}>
+        <Text style={{ fontWeight: '800', fontSize: 20, backgroundColor:'#f1c40f', paddingLeft: 5, paddingRight: 5, borderRadius: 5, textAlign:'center'}}><Text style={{fontSize:10}}>OTP{`\n`}</Text>{item.journey[legId].entity.OTP}</Text>
+        <Image source={require('../assets/AUTO.png')} style={[styles.modeImgs]} />
+        <Text style={{ fontSize: 10 }}>{item.journey[legId].entity.driverName}</Text>
+        <Text style={{ fontSize: 10 }}>{item.journey[legId].entity.vehicleNo}</Text>
+      </View>);
+      var actionButtons = (<View style={[{ alignItems: 'stretch', justifyContent: 'space-between', flexDirection: 'row', width: '100%', paddingTop: 10 }]}>
+        <Button title='Pay' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
+        <Button title='Call Driver' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
+      </View>)
+      var finalActionButtons = (<View style={[styles.rowDiv, { padding: 10, paddingTop: 0 }]}>
+        <Button title='Navigate' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
+        <Button title='Finished Leg' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
+      </View>)
+    }
+
+
+
+    return (
+      <View style={styles.slide}>
+        <View style={[styles.rowDiv, { margin: 10, backgroundColor: '#eee', borderRadius: 5 }]}>
+          {img}
+          <View style={[styles.colDiv, { borderLeftColor: '#ddd', borderLeftWidth: 1, padding: 10 }]}>
+            <View style={[styles.colDiv, { justifyContent: 'center', alignItems: 'flex-start', width: '100%' }]}>
+              <Text ellipsizeMode={'tail'} numberOfLines={1}><Text style={styles.qText}>From : </Text>{item.journey[legId].entity.from}</Text>
+              <Text ellipsizeMode={'tail'} numberOfLines={1}><Text style={styles.qText}>To : </Text>{item.journey[legId].entity.to}</Text>
+            </View>
+            <View style={[styles.rowDiv, { justifyContent: 'space-between', width: '100%', paddingTop: 10 }]}>
+              <View style={[styles.rowDiv, styles.chip]}>
+                <Icon name='clock-outline' type='material-community' color='#000' />
+                <Text style={styles.subtitle}> {item.journey[legId].entity.time} Mins</Text>
+              </View>
+              <View style={[styles.rowDiv, styles.chip]}>
+                <Icon name='map-marker-path' type='material-community' color='#000' />
+                <Text style={styles.subtitle}> {item.journey[legId].entity.distance} KMs</Text>
+              </View>
+              <View style={[styles.rowDiv, styles.chip]}>
+                <Icon name='currency-inr' type='material-community' color='#000' />
+                <Text style={styles.subtitle}>{item.journey[legId].entity.fare} Rs</Text>
+              </View>
+            </View>
+            {actionButtons}
+          </View>
+        </View>
+        {finalActionButtons}
+
       </View>
-    </View>
-  );
+    );
   }
 
   render() {
@@ -146,7 +190,7 @@ export class JourneyProgressCardBottom extends React.Component {
         containerCustomStyle={styles.container}
         contentContainerCustomStyle={styles.slides}
         ref={(c) => { this._carousel = c; }}
-        data={this.state.currentLeg}
+        data={this.state.journey}
         renderItem={this._renderItem}
         sliderWidth={viewportWidth}
         //   sliderHeight={400}
