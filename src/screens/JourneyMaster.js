@@ -9,6 +9,7 @@ import { JourneyCompleteCard } from '../components/JourneyCompleteCard';
 import { SettingsView } from '../components/SettingsView';
 import { JOURNEYS, CURRRENT_JOURNEY } from '../static/journeys';
 import { Icon, Overlay, Button } from 'react-native-elements'
+import { fetchJourneys } from '../actions/Journey';
 // import console = require('console');
 // import console = require('console');
 
@@ -40,6 +41,12 @@ class JourneyMaster extends React.Component {
      *     leg: 3
      *   }
      * })*/
+    fetchJourneys({
+      fromLat: 23.011295,
+      fromLng: 72.506192,
+      toLat: 23.027547,
+      toLng: 72.598136
+    });
     this.state = {
       currentJourney: this.props.journey.get('currentJourney'),
       currentJourneyBrowse: this.props.journey.get('currentJourneyBrowse'),
@@ -72,6 +79,7 @@ class JourneyMaster extends React.Component {
         }
       ]
     };
+    
   }
 
   render() {
