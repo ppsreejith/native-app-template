@@ -177,7 +177,15 @@ class JourneyCompleteCardComponent extends React.Component {
             {stars}
           </View>
 
-          <Button title="Submit" buttonStyle={{ backgroundColor: '#333', marginTop: 10 }} />
+          <Button title="Submit" buttonStyle={{ backgroundColor: '#333', marginTop: 10 }} 
+          onPress={()=>{
+            this.props.dispatch({
+              type: 'APPSTATE_UPDATE_ACTIVE_SCREEN',
+              payload: {
+                activeScreen: 'JOURNEY_CHOOSE'
+              }
+            });
+          }}/>
         </View>
       );
     }

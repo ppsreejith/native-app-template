@@ -144,6 +144,12 @@ class JourneyCardComponent extends React.Component {
               currentJourney: currentJourney
             }
           });
+          this.props.dispatch({
+            type: 'APPSTATE_UPDATE_ACTIVE_SCREEN',
+            payload: {
+              activeScreen: 'JOURNEY_PROGRESS'
+            }
+          });
         }}>
           <View style={[styles.rowDiv,{paddingRight: 10}]}>
             <Text style={styles.title}>Journey {index + 1} : {item.title}</Text>

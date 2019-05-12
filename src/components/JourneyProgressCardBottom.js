@@ -99,9 +99,10 @@ class JourneyProgressCardBottomComponent extends React.Component {
   _renderItem(self) {
     return ({ item, index }) => {
       var img = '';
-      const legId = this.props.appState.get('currentLeg');
+      var legId = this.props.appState.get('currentLeg');
+      const maxLegs = this.props.appState.get('maxLegs');
 
-      console.log(legId);
+      console.log(legId, maxLegs);
 
       if (item.journey[legId].entity.type === 'PERSON') {
         img = (<View style={[styles.modeImgsView]}>
@@ -114,21 +115,25 @@ class JourneyProgressCardBottomComponent extends React.Component {
           <Button title='Finished Leg' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }}
             onPress={() => {
               // console.log('legbutton', this.props.journey.get('currentLeg'));
-              var leg = this.props.appState.get('currentLeg');
-              const maxLegs = this.props.appState.get('maxLegs');
               // console.log('legbutton',leg, curJourney);
 
 
-              if(leg==maxLegs){
-                leg = null;
+              if(legId==maxLegs){
+                legId = null;
+                this.props.dispatch({
+                  type: 'APPSTATE_UPDATE_ACTIVE_SCREEN',
+                  payload: {
+                    activeScreen: 'JOURNEY_END'
+                  }
+                });
               }
               else{
-                leg = leg + 1;
+                legId = legId + 1;
               }
               this.props.dispatch({
                 type: 'APPSTATE_UPDATE_CURRENT_LEG',
                 payload: {
-                  currentLeg: leg
+                  currentLeg: legId
                 }
               });
             }} />
@@ -150,20 +155,23 @@ class JourneyProgressCardBottomComponent extends React.Component {
           <Button title='Navigate' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
           <Button title='Finished Leg' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} 
           onPress={() => {
-            // console.log('legbutton', this.props.journey.get('currentLeg'));
-            var leg = this.props.appState.get('currentLeg');
-            const maxLegs = this.props.appState.get('maxLegs');
-              
-            if(leg==maxLegs){
-              leg = null;
+            // console.log('legbutton', this.props.journey.get('currentLeg'));  
+            if(legId==maxLegs){
+              legId = null;
+              this.props.dispatch({
+                type: 'APPSTATE_UPDATE_ACTIVE_SCREEN',
+                payload: {
+                  activeScreen: 'JOURNEY_END'
+                }
+              });
             }
             else{
-              leg = leg + 1;
+              legId = legId + 1;
             }
             this.props.dispatch({
               type: 'APPSTATE_UPDATE_CURRENT_LEG',
               payload: {
-                currentLeg: leg
+                currentLeg: legId
               }
             });
           }} />
@@ -186,19 +194,23 @@ class JourneyProgressCardBottomComponent extends React.Component {
           <Button title='Navigate' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
           <Button title='Finished Leg' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} 
           onPress={() => {
-            var leg = this.props.appState.get('currentLeg');
-            const maxLegs = this.props.appState.get('maxLegs');
               
-            if(leg==maxLegs){
-              leg = null;
+            if(legId==maxLegs){
+              legId = null;
+              this.props.dispatch({
+                type: 'APPSTATE_UPDATE_ACTIVE_SCREEN',
+                payload: {
+                  activeScreen: 'JOURNEY_END'
+                }
+              });
             }
             else{
-              leg = leg + 1;
+              legId = legId + 1;
             }
             this.props.dispatch({
               type: 'APPSTATE_UPDATE_CURRENT_LEG',
               payload: {
-                currentLeg: leg
+                currentLeg: legId
               }
             });
           }} />
