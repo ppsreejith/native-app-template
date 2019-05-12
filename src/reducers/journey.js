@@ -3,8 +3,8 @@ import { createReducer } from '../utils';
 
 const initialState = Immutable.fromJS({
   currentJourneyBrowse : 0,
-  currentJourney: 0,
-  currentLeg: 0,
+  currentJourney: null,
+  currentLeg: null,
   journeys: [
     {
       title: "Optimized for Time",

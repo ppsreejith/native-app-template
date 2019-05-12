@@ -80,8 +80,8 @@ class JourneyMaster extends React.Component {
     var componentToRender = '';
     if (this.state.journeys) {
       // console.log('This is being rendered');
-      if (this.state.currentJourney!=undefined) {
-        if (this.state.currentLeg!=undefined) {
+      if (this.state.currentJourney!=null) {
+        if (this.state.currentLeg!=null) {
           componentToRender = (<View style={styles.container}>
             <JourneyProgressCardTop/>
             <JourneyProgressCardBottom/>
