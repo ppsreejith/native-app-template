@@ -21,9 +21,9 @@ const styles = StyleSheet.create({
 const MARKER_TYPES = {
   // PERSON: () =>  <View style={styles.myLocation}></View>
   PERSON: () => <Image source={require('../assets/PERSON_MARKER.png')} style={{ width: 30, height: 30 }}/>,
-  HOME: () => <Image source={require('../assets/home.png')} style={{ width: 30, height: 30 }}/>,
-  STOP: () => <Image source={require('../assets/marker.png')} style={{ width: 30, height: 30 }}/>,
-  DESTINATION: () => <Image source={require('../assets/flag.png')} style={{ width: 30, height: 30 }}/>,
+  HOME: () => <Image source={require('../assets/home.png')} style={{ width: 40, height: 40 }}/>,
+  STOP: () => <Image source={require('../assets/marker.png')} style={{ width: 20, height: 20 }}/>,
+  DESTINATION: () => <Image source={require('../assets/flag.png')} style={{ width: 40, height: 40 }}/>,
   BUS: () => <Image source={require('../assets/BUS_MARKER.png')} style={{ width: 30, height: 30 }}/>,
   AUTO: () => <Image source={require('../assets/AUTO_MARKER.png')} style={{ width: 30, height: 30 }}/>
 }

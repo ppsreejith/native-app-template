@@ -75,11 +75,13 @@ class JourneyMaster extends React.Component {
   }
 
   render() {
+    const currentJourneyBrowse = this.props.journey.get('currentJourneyBrowse');
+    const journeys = this.props.journey.get('journeys').toJS();
     var componentToRender = '';
     if (this.state.journeys) {
       // console.log('This is being rendered');
-      if (this.state.currentJourney) {
-        if (this.state.currentLeg) {
+      if (this.state.currentJourney!=undefined) {
+        if (this.state.currentLeg!=undefined) {
           componentToRender = (<View style={styles.container}>
             <JourneyProgressCardTop/>
             <JourneyProgressCardBottom/>
@@ -124,7 +126,7 @@ class JourneyMaster extends React.Component {
     return (
       <View style={styles.container}>
         {/* <JourneyMap journey={this.state.journey} /> */}
-        <JourneyMap journey={this.state.journeys[this.state.currentJourneyBrowse].journey} />
+        <JourneyMap journey={journeys[currentJourneyBrowse].journey} />
         {componentToRender}
       </View>
     )

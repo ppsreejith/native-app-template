@@ -103,7 +103,7 @@ class JourneyProgressCardBottomComponent extends React.Component {
 
     var img = '';
     // const legId = item.journeyLegCurrentId;
-    const legId = 1;
+    const legId = this.state.currentLeg;
 
     console.log(legId);
 

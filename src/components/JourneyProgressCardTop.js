@@ -97,10 +97,10 @@ class JourneyProgressCardTopComponent extends React.Component {
         return;
       }
 
-      if (id<this.state.journey[0].journeyLegCurrentId){
+      if (id<this.state.currentLeg){
         ringColor = '#000';
         backgroundColor = '#000';
-      } else if (id===this.state.journey[0].journeyLegCurrentId){
+      } else if (id===this.state.currentLeg){
         ringColor = '#27ae60';
         backgroundColor='#eee';
       } else {

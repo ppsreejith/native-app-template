@@ -51,16 +51,46 @@ const Map = ({entities, routes, times, style}) => {
       <EntityMarker key={key} {...entity} />
     );
   });
+  
+  const endsMarkers = _.map(routes, (route, key) => {
+    if(key==0){
+      const ent = {
+        coordinate : route[0][0],
+        type: 'HOME'
+      };
+    
+      return(<EntityMarker key={key} {...ent} />);
+    }
+    else if(key==routes.length-1){
+      const ent = {
+        coordinate : route[0][routes[0].length-1],
+        type: 'DESTINATION'
+      };
+    
+      return(<EntityMarker key={key} {...ent} />);
+    }
+  });
+
+  const stopMarkers = _.map(routes, (route, key) => {
+    if(key!=0){
+      const ent = {
+        coordinate : route[0][0],
+        type: 'STOP'
+      };
+    
+      return(<EntityMarker key={key} {...ent} />);
+    }
+  });
+
+
+
+
   const routeMarkers = _.map(routes, (route, key) => {
     _.each(route[0], getMinMax);
     console.log('route',route);
     var color='';
     var dashpattern = null;
     var strokeWidth = 3;
-
-
-
-
     if(route[1]=='AUTO'){
       color = '#2980b9';
     }
@@ -102,7 +132,9 @@ const Map = ({entities, routes, times, style}) => {
         region={region} >
       {entityMarkers}
       {routeMarkers}
-      {timeMarkers}
+      {/* {timeMarkers} */}
+      {stopMarkers}
+      {endsMarkers}
     </AnimatedMap>
   )
 }
