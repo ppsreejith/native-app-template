@@ -128,11 +128,33 @@ class JourneyCardComponent extends React.Component {
       });
 
       return (
-        <View style={styles.slide}>
+        <TouchableOpacity style={styles.slide} onPress={() => {
+          // console.log(this._carousel.currentIndex);
+          const currentJourney = this._carousel.currentIndex;
+          const maxlegs = this.props.journey.get('journeys').toJS()[currentJourney].journey.length - 1;
+          this.props.dispatch({
+            type: 'APPSTATE_UPDATE_MAX_LEGS',
+            payload: {
+              maxLegs: maxlegs
+            }
+          });
+          this.props.dispatch({
+            type: 'APPSTATE_UPDATE_CURRENT_JOURNEY',
+            payload: {
+              currentJourney: currentJourney
+            }
+          });
+          this.props.dispatch({
+            type: 'APPSTATE_UPDATE_ACTIVE_SCREEN',
+            payload: {
+              activeScreen: 'JOURNEY_PROGRESS'
+            }
+          });
+        }}>
           <View style={[styles.rowDiv,{paddingRight: 10}]}>
             <Text style={styles.title}>Journey {index + 1} : {item.title}</Text>
             <Icon name='information' type='material-community' color='#333' onPress={()=>{
-                console.log('i clicked');
+                // console.log('i clicked');
                 self.setState({isVisible: true})
               }}/>
             <Overlay
@@ -161,7 +183,7 @@ class JourneyCardComponent extends React.Component {
           <View style={[styles.rowDiv, { padding: 10 }]}>
             {modes}
           </View>
-        </View>
+        </TouchableOpacity>
       );
     }
   }
@@ -178,22 +200,19 @@ class JourneyCardComponent extends React.Component {
         onSnapToItem={(i)=>{
           // console.log('snapped_to_',i);
           this.props.dispatch({
-            type: 'JOURNEY_UPDATE_BROWSE',
+            type: 'APPSTATE_UPDATE_BROWSE',
             payload: {
               currentJourneyBrowse: i
             }
-          });  
+          });
         }}
-        //   sliderHeight={400}
-
         itemWidth={viewportWidth - 100}
-      //   itemHeight={200}
       />
     );
   }
 }
 
-export const JourneyCard = connect(({ journey }) => ({ journey }))(JourneyCardComponent);
+export const JourneyCard = connect(({ journey, appState }) => ({ journey, appState }))(JourneyCardComponent);
 
 
 

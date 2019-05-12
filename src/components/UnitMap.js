@@ -87,7 +87,7 @@ const Map = ({entities, routes, times, style}) => {
 
   const routeMarkers = _.map(routes, (route, key) => {
     _.each(route[0], getMinMax);
-    console.log('route',route);
+    // console.log('route',route);
     var color='';
     var dashpattern = null;
     var strokeWidth = 3;

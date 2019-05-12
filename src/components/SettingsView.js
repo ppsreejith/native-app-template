@@ -5,6 +5,7 @@ import Carousel from 'react-native-snap-carousel';
 // import { JOURNEYS } from '../static/journeys';
 // import console = require('console');
 import { Icon, CheckBox, Slider, Input } from 'react-native-elements'
+import {connect} from 'react-redux';
 
 const styles = {
   container: {
@@ -47,16 +48,8 @@ const styles = {
 }
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
-export class SettingsView extends React.Component {
-  state = {
-    maxWalkingValue: 0.2,
-    autoBookAuto: true,
-    busPrefAC: true,
-    busPrefEXPRESS: true,
-    busPrefLOCAL: true,
-    meterMeleAmount: '25'
-  }
-
+class SettingsViewComponent extends React.Component {
+  
   render() {
     return (
       <View style={[styles.colDiv, { justifyContent: 'space-between', alignItems: 'stretch' }]}>
@@ -71,16 +64,16 @@ export class SettingsView extends React.Component {
                 size={18}
                 containerStyle={styles.checkbox}
                 textStyle={{ fontWeight: '100' }}
-                checked={this.state.busPrefAC}
-                onPress={() => this.setState({ busPrefAC: !this.state.busPrefAC })} />
+                checked={this.props.appState.get('busPref').get('AC')}
+                onPress={() => this.props.dispatch({type: 'APPSTATE_UPDATE_BUS_PREF_AC',payload: {acPref: !this.props.appState.get('busPref').get('AC')}})} />
 
               <CheckBox
                 checkedColor={'#333'}
                 title='Express' size={18}
                 containerStyle={styles.checkbox}
                 textStyle={{ fontWeight: '100' }}
-                checked={this.state.busPrefEXPRESS}
-                onPress={() => this.setState({ busPrefEXPRESS: !this.state.busPrefEXPRESS })} />
+                checked={this.props.appState.get('busPref').get('EXPRESS')}
+                onPress={() => this.props.dispatch({type: 'APPSTATE_UPDATE_BUS_PREF_EXPRESS',payload: {expressPref: !this.props.appState.get('busPref').get('EXPRESS')}})} />
 
               <CheckBox
                 checkedColor={'#333'}
@@ -88,8 +81,8 @@ export class SettingsView extends React.Component {
                 size={18}
                 containerStyle={styles.checkbox}
                 textStyle={{ fontWeight: '100' }}
-                checked={this.state.busPrefLOCAL}
-                onPress={() => this.setState({ busPrefLOCAL: !this.state.busPrefLOCAL })} />
+                checked={this.props.appState.get('busPref').get('LOCAL')}
+                onPress={() => this.props.dispatch({type: 'APPSTATE_UPDATE_BUS_PREF_LOCAL',payload: {localPref: !this.props.appState.get('busPref').get('LOCAL')}})} />
 
             </View>
           </View>
@@ -97,25 +90,25 @@ export class SettingsView extends React.Component {
           <View style={[styles.box, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}>
             <Text style={[styles.heading, { marginRight: 10 }]}>Auto book Auto-Rickshaw</Text>
             <Switch
-              value={this.state.autoBookAuto}
+              value={this.props.appState.get('autoBookAuto')}
               trackColor={{ true: "#333", false: '#aaa' }}
               thumbColor={'#333'}
-              onValueChange={() => this.setState({ autoBookAuto: !this.state.autoBookAuto })} />
+              onValueChange={(autoBookAuto) => this.props.dispatch({type: 'APPSTATE_UPDATE_AUTO_BOOK',payload: {autoBookAuto}})} />
           </View>
 
           <View style={[styles.box]}>
             <View style={[styles.rowDiv, { marginTop: 10, marginBottom: 10 }]}>
               <Text style={styles.heading}>Maximum Walking Distance</Text>
-              <Text>{this.state.maxWalkingValue.toFixed(1)} KMs</Text>
+              <Text>{this.props.appState.get('maxWalkingValue').toFixed(1)} KMs</Text>
             </View>
             <Slider
-              value={this.state.maxWalkingValue}
+              value={this.props.appState.get('maxWalkingValue')}
               maximumValue={3}
               minimumValue={0}
               minimumTrackTintColor={'#333'}
               maximumTrackTintColor={'#aaa'}
               thumbTintColor={'#333'}
-              onValueChange={maxWalkingValue => this.setState({ maxWalkingValue })}
+              onValueChange={maxWalkingValue => this.props.dispatch({type: 'APPSTATE_UPDATE_MAX_WALKING',payload: {maxWalkingValue}})}
             />
           </View>
 
@@ -125,19 +118,21 @@ export class SettingsView extends React.Component {
               <Input
                 style={{ alignSelf: 'center', textAlign: 'center', alignItems: 'center', justifyContent: 'center' }}
                 maxLength={3}
-                onChangeText={(meterMeleAmount) => this.setState({ meterMeleAmount })}
-                value={this.state.meterMeleAmount}
+                onChangeText={(meterMeleAmount) => this.props.dispatch({type: 'APPSTATE_UPDATE_METER_MELE',payload: {meterMeleAmount}})}
+                value={this.props.appState.get('meterMeleAmount')}
               />
             </View>
           </View>
         </View>
-        <View>
+        {/* <View>
           <Button
             title="Apply Changes"
             color="#333"
           />
-        </View>
+        </View> */}
       </View>
     );
   }
 }
+
+export const SettingsView = connect(({appState }) => ({appState }))(SettingsViewComponent);

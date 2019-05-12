@@ -2,9 +2,6 @@ import Immutable from 'immutable';
 import { createReducer } from '../utils';
 
 const initialState = Immutable.fromJS({
-  currentJourneyBrowse : 0,
-  currentJourney: null,
-  currentLeg: null,
   journeys: [
     {
       title: "Optimized for Time",
@@ -155,8 +152,6 @@ const initialState = Immutable.fromJS({
 });
 
 const reducers = {
-  JOURNEY_UPDATE_LEG: (state, { leg }) => state.setIn(['currentLeg'], leg),
-  JOURNEY_UPDATE_BROWSE: (state, { currentJourneyBrowse }) => state.setIn(['currentJourneyBrowse'], currentJourneyBrowse),
   JOURNEY_INITIALIZE: (state, { journeys }) => Immutable.fromJS({
     currentJourneyBrowse : 0,
     currentJourney: null,

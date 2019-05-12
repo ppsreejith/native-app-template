@@ -6,7 +6,7 @@ import Carousel from 'react-native-snap-carousel';
 // import console = require('console');
 import { Icon } from 'react-native-elements'
 // import console = require('console');
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 const styles = {
   container: {
@@ -59,13 +59,13 @@ const styles = {
   subtitle: {
     color: '#fff',
   },
-  chip:{
-    flex:0, 
-    backgroundColor:'#000', 
-    borderRadius:30, 
-    padding:5, 
-    paddingLeft:10, 
-    paddingRight:10
+  chip: {
+    flex: 0,
+    backgroundColor: '#000',
+    borderRadius: 30,
+    padding: 5,
+    paddingLeft: 10,
+    paddingRight: 10
   }
 
 }
@@ -75,68 +75,69 @@ class JourneyProgressCardTopComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      journey: [this.props.journey.get('journeys').toJS()[this.props.journey.get('currentJourney')]],
-      currentJourney: this.props.journey.get('currentJourney'),
-      currentLeg : this.props.journey.get('currentLeg')
+      journey: [this.props.journey.get('journeys').toJS()[this.props.appState.get('currentJourney')]],
 
     }
-    
+
     this._renderItem = this._renderItem.bind(this);
 
   }
-  _renderItem({ item, index }) {
-    const totalDistance = _.reduce(_.map(item.journey, ({ entity }) => entity.distance), (sum, n)=>sum + n, 0);
-    const totalFare = _.reduce(_.map(item.journey, ({ entity }) => entity.fare), (sum, n)=>sum + n, 0);
-    const totalTime = _.reduce(_.map(item.journey, ({ entity }) => entity.time), (sum, n)=>sum + n, 0);
-    // console.log(item.title, );
+  _renderItem(self) {
+    return ({ item, index }) => {
+      const totalDistance = _.reduce(_.map(item.journey, ({ entity }) => entity.distance), (sum, n) => sum + n, 0);
+      const totalFare = _.reduce(_.map(item.journey, ({ entity }) => entity.fare), (sum, n) => sum + n, 0);
+      const totalTime = _.reduce(_.map(item.journey, ({ entity }) => entity.time), (sum, n) => sum + n, 0);
+      // console.log(item.title, );
 
-    const modes = _.map(item.journey, ({ entity }, id) => {
-      var img = '';
-      var ringColor = '';
-      if ((entity.type=='HOME')|| (entity.type=='DESTINATION')|| (entity.type=='STOP')){
-        return;
-      }
+      const modes = _.map(item.journey, ({ entity }, id) => {
+        var img = '';
+        var ringColor = '';
+        if ((entity.type == 'HOME') || (entity.type == 'DESTINATION') || (entity.type == 'STOP')) {
+          return;
+        }
 
-      if (id<this.state.currentLeg){
-        ringColor = '#000';
-        backgroundColor = '#000';
-      } else if (id===this.state.currentLeg){
-        ringColor = '#27ae60';
-        backgroundColor='#eee';
-      } else {
-        ringColor = '#333';
-        backgroundColor = '#eee';
-      }
-      console.log(id, this.state.journey[0].journeyLegCurrentId, ringColor);
+        if (id < this.props.appState.get('currentLeg')) {
+          ringColor = '#000';
+          backgroundColor = '#000';
+        } else if (id === this.props.appState.get('currentLeg')) {
+          ringColor = '#27ae60';
+          backgroundColor = '#eee';
+        } else {
+          ringColor = '#333';
+          backgroundColor = '#eee';
+        }
+        // console.log(id, this.state.journey[0].journeyLegCurrentId, ringColor);
 
-      if (entity.type === 'PERSON') {
-        img = <View style={[styles.modeImgsView,{backgroundColor:backgroundColor}]}><Image source={require('../assets/PERSON.png')} style={[styles.modeImgs]}/></View>;
-      } else if (entity.type === 'BUS') {
-        img = <View style={[styles.modeImgsView,{backgroundColor:backgroundColor}]}><Image source={require('../assets/BUS.png')} style={[styles.modeImgs]}/></View>;
-      } else if (entity.type === 'AUTO') {
-        img = <View style={[styles.modeImgsView,{backgroundColor:backgroundColor}]}><Image source={require('../assets/AUTO.png')} style={[styles.modeImgs]}/></View>;
-      }
-
-
+        if (entity.type === 'PERSON') {
+          img = <View style={[styles.modeImgsView, { backgroundColor: backgroundColor }]}><Image source={require('../assets/PERSON.png')} style={[styles.modeImgs]} /></View>;
+        } else if (entity.type === 'BUS') {
+          img = <View style={[styles.modeImgsView, { backgroundColor: backgroundColor }]}><Image source={require('../assets/BUS.png')} style={[styles.modeImgs]} /></View>;
+        } else if (entity.type === 'AUTO') {
+          img = <View style={[styles.modeImgsView, { backgroundColor: backgroundColor }]}><Image source={require('../assets/AUTO.png')} style={[styles.modeImgs]} /></View>;
+        }
 
 
-      // console.log(entity.type, img);
+
+
+        // console.log(entity.type, img);
+        return (
+          <View key={id} style={styles.colDiv}>
+            {/* <View style={[styles.outerCircle, { backgroundColor: ringColor }]}> */}
+            <View style={[styles.outerCircle, { backgroundColor: ringColor, position: 'relative' }]}>
+              {img}
+            </View>
+          </View>)
+      });
+
       return (
-        <View key={id} style={styles.colDiv}>
-          {/* <View style={[styles.outerCircle, { backgroundColor: ringColor }]}> */}
-          <View style={[styles.outerCircle, { backgroundColor: ringColor, position:'relative' }]}>
-            {img}
+        <View style={styles.slide}>
+          <View style={[styles.rowDiv, { padding: 7 }]}>
+            {modes}
           </View>
-        </View>)
-    });
-
-    return (
-      <View style={styles.slide}>
-        <View style={[styles.rowDiv, { padding: 7 }]}>
-          {modes}
         </View>
-      </View>
-    );
+      );
+    }
+
   }
 
   render() {
@@ -146,7 +147,7 @@ class JourneyProgressCardTopComponent extends React.Component {
         contentContainerCustomStyle={styles.slides}
         ref={(c) => { this._carousel = c; }}
         data={this.state.journey}
-        renderItem={this._renderItem}
+        renderItem={this._renderItem(this)}
         sliderWidth={viewportWidth}
         //   sliderHeight={400}
 
@@ -157,4 +158,4 @@ class JourneyProgressCardTopComponent extends React.Component {
   }
 }
 
-export const JourneyProgressCardTop = connect(({ journey }) => ({ journey }))(JourneyProgressCardTopComponent);
+export const JourneyProgressCardTop = connect(({ journey, appState }) => ({ journey, appState }))(JourneyProgressCardTopComponent);

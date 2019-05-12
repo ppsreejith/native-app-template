@@ -41,96 +41,113 @@ class JourneyMaster extends React.Component {
      *     leg: 3
      *   }
      * })*/
-    fetchJourneys({
-      fromLat: 23.011295,
-      fromLng: 72.506192,
-      toLat: 23.027547,
-      toLng: 72.598136
-    });
+    /* fetchJourneys({
+     *   fromLat: 23.011295,
+     *   fromLng: 72.506192,
+     *   toLat: 23.027547,
+     *   toLng: 72.598136
+     * });*/
     this.state = {
-      currentJourney: this.props.journey.get('currentJourney'),
-      currentJourneyBrowse: this.props.journey.get('currentJourneyBrowse'),
-      currentLeg: this.props.journey.get('currentLeg'),
       isVisible: false,
-      journeys: this.props.journey.get('journeys').toJS(),
-      journey: [
-        {
-          entity: {
-            coordinate: {
-              latitude: 12.931093,
-              longitude: 77.628987,
-            },
-            type: "PERSON",
-          },
-          route: [{
-            latitude: 12.931093,
-            longitude: 77.628987,
-          }, {
-            latitude: 12.991093,
-            longitude: 77.828987,
-          }],
-          time: {
-            coordinate: {
-              latitude: 12.991093,
-              longitude: 77.828987,
-            },
-            time: new Date()
-          }
-        }
-      ]
     };
     
   }
 
   render() {
-    const currentJourneyBrowse = this.props.journey.get('currentJourneyBrowse');
+    const currentJourney = this.props.appState.get('currentJourney');
+    const currentJourneyBrowse = this.props.appState.get('currentJourneyBrowse');
+    const currentLeg = this.props.appState.get('currentLeg');
+    const activeScreen = this.props.appState.get('activeScreen');
+  
     const journeys = this.props.journey.get('journeys').toJS();
     var componentToRender = '';
-    if (this.state.journeys) {
-      // console.log('This is being rendered');
-      if (this.state.currentJourney!=null) {
-        if (this.state.currentLeg!=null) {
-          componentToRender = (<View style={styles.container}>
-            <JourneyProgressCardTop/>
-            <JourneyProgressCardBottom/>
-          </View>);
-        }
-        else{
-          componentToRender = (<View style={styles.container}>
-            <JourneyCompleteCard/>
-          </View>);
-        }
-      }
-      else {
-        componentToRender = (<View style={styles.container}>
-          <JourneyCard></JourneyCard>
-          <View style={styles.filter}>
+    // if (journeys) {
+    //   // console.log('This is being rendered');
+    //   if (currentJourney!=null) {
+    //     if (currentLeg!=null) {
+    //       componentToRender = (<View style={styles.container}>
+    //         <JourneyProgressCardTop/>
+    //         <JourneyProgressCardBottom/>
+    //       </View>);
+    //     }
+    //     else{
+    //       componentToRender = (<View style={styles.container}>
+    //         <JourneyCompleteCard/>
+    //       </View>);
+    //     }
+    //   }
+    //   else {
+    //     componentToRender = (<View style={styles.container}>
+    //       <JourneyCard></JourneyCard>
+    //       <View style={styles.filter}>
 
-            <Button
-              icon={
-                <Icon
-                  name="cog"
-                  size={30}
-                  type='font-awesome'
-                  color="white"
-                />
-              }
-              onPress={() => {
-                this.setState({ isVisible: true });
-              }}
-              title=""
-              buttonStyle={{ borderRadius: 50, padding: 9, paddingRight: 10, paddingLeft: 10, backgroundColor: '#333' }}
-            />
-          </View>
-          <Overlay
-            isVisible={this.state.isVisible}
-            onBackdropPress={() => this.setState({ isVisible: false })}
-          >
-            <SettingsView></SettingsView>
-          </Overlay>
-        </View>);
-      }
+    //         <Button
+    //           icon={
+    //             <Icon
+    //               name="cog"
+    //               size={30}
+    //               type='font-awesome'
+    //               color="white"
+    //             />
+    //           }
+    //           onPress={() => {
+    //             this.setState({ isVisible: true });
+    //           }}
+    //           title=""
+    //           buttonStyle={{ borderRadius: 50, padding: 9, paddingRight: 10, paddingLeft: 10, backgroundColor: '#333' }}
+    //         />
+    //       </View>
+    //       <Overlay
+    //         isVisible={this.state.isVisible}
+    //         onBackdropPress={() => this.setState({ isVisible: false })}
+    //       >
+    //         <SettingsView></SettingsView>
+    //       </Overlay>
+    //     </View>);
+    //   }
+    // }
+
+    if (activeScreen=='JOURNEY_CHOOSE') {
+      componentToRender = (<View style={styles.container}>
+        <JourneyCard></JourneyCard>
+        <View style={styles.filter}>
+
+          <Button
+            icon={
+              <Icon
+                name="cog"
+                size={30}
+                type='font-awesome'
+                color="white"
+              />
+            }
+            onPress={() => {
+              this.setState({ isVisible: true });
+            }}
+            title=""
+            buttonStyle={{ borderRadius: 50, padding: 9, paddingRight: 10, paddingLeft: 10, backgroundColor: '#333' }}
+          />
+        </View>
+        <Overlay
+          isVisible={this.state.isVisible}
+          onBackdropPress={() => this.setState({ isVisible: false })}
+        >
+          <SettingsView></SettingsView>
+        </Overlay>
+      </View>);
     }
+    else if (activeScreen=='JOURNEY_PROGRESS') {
+      componentToRender = (<View style={styles.container}>
+          <JourneyProgressCardTop/>
+          <JourneyProgressCardBottom/>
+        </View>);
+    }
+    else if (activeScreen=='JOURNEY_END') {
+      componentToRender = (<View style={styles.container}>
+        <JourneyCompleteCard/>
+      </View>);
+    }
+
     return (
       <View style={styles.container}>
         {/* <JourneyMap journey={this.state.journey} /> */}
@@ -141,4 +158,4 @@ class JourneyMaster extends React.Component {
   }
 }
 
-export default connect(({ journey }) => ({ journey }))(JourneyMaster);
+export default connect(({ journey, appState }) => ({ journey, appState }))(JourneyMaster);
