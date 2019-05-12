@@ -6,6 +6,7 @@ import _ from 'lodash';
 import EntityMarker from './EntityMarker';
 import TimeMarker from './TimeMarker';
 import AnimatedMap from './AnimatedMap';
+// import console = require('console');
 
 const styles = StyleSheet.create({
   map: {
@@ -51,11 +52,33 @@ const Map = ({entities, routes, times, style}) => {
     );
   });
   const routeMarkers = _.map(routes, (route, key) => {
-    _.each(route, getMinMax);    
+    _.each(route[0], getMinMax);
+    console.log('route',route);
+    var color='';
+    var dashpattern = null;
+    var strokeWidth = 3;
+
+
+
+
+    if(route[1]=='AUTO'){
+      color = '#2980b9';
+    }
+    else if(route[1]=='BUS'){
+      color = '#8e44ad';
+    }
+    else if(route[1]=='PERSON'){
+      color = '#d35400';
+      strokeWidth=3;
+      dashpattern = [5,5];
+    }
     return (
       <Polyline
           key={key}
-          coordinates={route}/>
+          coordinates={route[0]}
+          strokeColor={color}
+          strokeWidth	={strokeWidth}
+          lineDashPattern={dashpattern}/>
     )
   });
   const timeMarkers = _.map(times, (time, key) => {

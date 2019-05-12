@@ -6,6 +6,7 @@ import Carousel from 'react-native-snap-carousel';
 // import console = require('console');
 import { Icon } from 'react-native-elements'
 // import console = require('console');
+import {connect} from 'react-redux';
 
 const styles = {
   container: {
@@ -70,11 +71,14 @@ const styles = {
 }
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
-export class JourneyProgressCardTop extends React.Component {
+class JourneyProgressCardTopComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      journey: this.props.journey,
+      journey: [this.props.journey.get('journeys').toJS()[this.props.journey.get('currentJourney')]],
+      currentJourney: this.props.journey.get('currentJourney'),
+      currentLeg : this.props.journey.get('currentLeg')
+
     }
     
     this._renderItem = this._renderItem.bind(this);
@@ -152,3 +156,5 @@ export class JourneyProgressCardTop extends React.Component {
     );
   }
 }
+
+export const JourneyProgressCardTop = connect(({ journey }) => ({ journey }))(JourneyProgressCardTopComponent);

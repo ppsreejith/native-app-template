@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class JourneyChooserScreen extends React.Component {
+class JourneyChooser extends React.Component {
   static navigationOptions = {
     header: null,
     headerMode: 'none',
@@ -70,7 +70,8 @@ class JourneyChooserScreen extends React.Component {
     return (
       <View style={styles.container}>
         <JourneyMap journey={this.state.journey} />
-        <JourneyCard journeys={JOURNEYS}></JourneyCard>
+        {/* <JourneyCard journeys={JOURNEYS}></JourneyCard> */}
+        <JourneyCard></JourneyCard>
         <View style={styles.filter}>
 
           <Button
@@ -100,4 +101,4 @@ class JourneyChooserScreen extends React.Component {
   }
 }
 
-export default connect(({journey}) => ({journey}))(JourneyChooserScreen);
+export default connect(({journey}) => ({journey}))(JourneyChooser);

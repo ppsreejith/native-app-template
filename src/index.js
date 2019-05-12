@@ -4,6 +4,7 @@ import Map from './screens/Map';
 import About from './screens/About';
 import JourneyChooser from './screens/JourneyChooser';
 import JourneyProgress from './screens/JourneyProgress';
+import JourneyMaster from './screens/JourneyMaster';
 import BookingComplete from './screens/BookingComplete';
 
 const RootStack = createStackNavigator(
@@ -14,9 +15,10 @@ const RootStack = createStackNavigator(
     JourneyChooser,
     JourneyProgress,
     BookingComplete,
+    JourneyMaster
   },
   {
-    initialRouteName: 'JourneyProgress'
+    initialRouteName: 'JourneyMaster'
   }
 );
 

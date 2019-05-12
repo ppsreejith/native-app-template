@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Animated, Dimensions } from 'react-native';
 import _ from 'lodash';
+import {connect} from 'react-redux';
+
 import Carousel from 'react-native-snap-carousel';
 // import { JOURNEYS } from '../static/journeys';
 // import console = require('console');
@@ -74,12 +76,12 @@ const styles = {
 }
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
-export class JourneyCard extends React.Component {
+class JourneyCardComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isVisible: false,
-      journeys: this.props.journeys
+      journeys: this.props.journey.get('journeys').toJS()
     }
   }
 
@@ -173,6 +175,15 @@ export class JourneyCard extends React.Component {
         data={this.state.journeys}
         renderItem={this._renderItem(this)}
         sliderWidth={viewportWidth}
+        onSnapToItem={(i)=>{
+          // console.log('snapped_to_',i);
+          this.props.dispatch({
+            type: 'JOURNEY_UPDATE_BROWSE',
+            payload: {
+              currentJourneyBrowse: i
+            }
+          });  
+        }}
         //   sliderHeight={400}
 
         itemWidth={viewportWidth - 100}
@@ -181,3 +192,9 @@ export class JourneyCard extends React.Component {
     );
   }
 }
+
+export const JourneyCard = connect(({ journey }) => ({ journey }))(JourneyCardComponent);
+
+
+
+// export default connect(({journey}) => ({journey}))(JourneyCard);

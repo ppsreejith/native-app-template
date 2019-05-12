@@ -4,6 +4,7 @@ import _ from 'lodash';
 import Carousel from 'react-native-snap-carousel';
 // import { JOURNEYS } from '../static/journeys';
 import { Icon, Button } from 'react-native-elements';
+import {connect} from 'react-redux';
 
 const styles = {
   container: {
@@ -84,11 +85,14 @@ const styles = {
 }
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
-export class JourneyProgressCardBottom extends React.Component {
+class JourneyProgressCardBottomComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      journey: this.props.journey
+      journey: [this.props.journey.get('journeys').toJS()[this.props.journey.get('currentJourney')]],
+      currentJourney: this.props.journey.get('currentJourney'),
+      currentLeg : this.props.journey.get('currentLeg')
+
     }
 
     this._renderItem = this._renderItem.bind(this);
@@ -201,3 +205,5 @@ export class JourneyProgressCardBottom extends React.Component {
     );
   }
 }
+
+export const JourneyProgressCardBottom = connect(({ journey }) => ({ journey }))(JourneyProgressCardBottomComponent);

@@ -6,6 +6,7 @@ import Carousel from 'react-native-snap-carousel';
 // import console = require('console');
 import { Icon, Button } from 'react-native-elements'
 // import console = require('console');
+import {connect} from 'react-redux';
 
 const styles = {
   container: {
@@ -85,100 +86,102 @@ const styles = {
 }
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
-export class JourneyCompleteCard extends React.Component {
+class JourneyCompleteCardComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      journey: this.props.journey,
-      rating: 0
+      journey: [this.props.journey.get('journeys').toJS()[this.props.journey.get('currentJourney')]],
+      currentJourney: this.props.journey.get('currentJourney'),
     }
 
-    this._renderItem = this._renderItem.bind(this);
+    // this._renderItem = this._renderItem.bind(this);
 
   }
   
   
 
-  _renderItem({ item, index }) {
-    // const totalDistance = _.reduce(_.map(item.journey, ({ entity }) => entity.distance), (sum, n)=>sum + n, 0);
-    // const totalFare = _.reduce(_.map(item.journey, ({ entity }) => entity.fare), (sum, n)=>sum + n, 0);
-    // const totalTime = _.reduce(_.map(item.journey, ({ entity }) => entity.time), (sum, n)=>sum + n, 0);
-    // // console.log(item.title, );
+  _renderItem(self) {
+    return ({ item, index }) => {
+      // const totalDistance = _.reduce(_.map(item.journey, ({ entity }) => entity.distance), (sum, n)=>sum + n, 0);
+      // const totalFare = _.reduce(_.map(item.journey, ({ entity }) => entity.fare), (sum, n)=>sum + n, 0);
+      // const totalTime = _.reduce(_.map(item.journey, ({ entity }) => entity.time), (sum, n)=>sum + n, 0);
+      // // console.log(item.title, );
 
-    const modes = _.map(item.journey, ({ entity }, id) => {
-      var img = '';
-      var ringColor = '';
+      const modes = _.map(item.journey, ({ entity }, id) => {
+        var img = '';
+        var ringColor = '';
 
 
-      if (entity.type === 'PERSON') {
-        img = <View style={styles.modeImgsView}><Image source={require('../assets/PERSON.png')} style={styles.modeImgs} /></View>;
-      } else if (entity.type === 'BUS') {
-        img = <View style={styles.modeImgsView}><Image source={require('../assets/BUS.png')} style={styles.modeImgs} /></View>;
-      } else if (entity.type === 'AUTO') {
-        img = <View style={styles.modeImgsView}><Image source={require('../assets/AUTO.png')} style={styles.modeImgs} /></View>;
+        if (entity.type === 'PERSON') {
+          img = <View style={styles.modeImgsView}><Image source={require('../assets/PERSON.png')} style={styles.modeImgs} /></View>;
+        } else if (entity.type === 'BUS') {
+          img = <View style={styles.modeImgsView}><Image source={require('../assets/BUS.png')} style={styles.modeImgs} /></View>;
+        } else if (entity.type === 'AUTO') {
+          img = <View style={styles.modeImgsView}><Image source={require('../assets/AUTO.png')} style={styles.modeImgs} /></View>;
+        }
+
+        if ((entity.occupancy === 'NONE') || (entity.occupancy === 'HIGH')) {
+          ringColor = '#27ae60';
+        } else if (entity.occupancy === 'MID') {
+          ringColor = '#f1c40f';
+        } else if (entity.occupancy === 'LOW') {
+          ringColor = '#c0392b';
+        }
+
+
+
+
+        // console.log(entity.type, img);
+        return (
+          <View key={id} style={styles.colDiv}>
+            {/* <View style={[styles.outerCircle, { backgroundColor: ringColor }]}> */}
+            <View style={[styles.outerCircle, { backgroundColor: '#eee', position: 'relative' }]}>
+              {img}
+              {/* <View style={{position:'absolute', height: 17, width: 17, backgroundColor: ringColor,right: 0, borderRadius: 10}}></View> */}
+              {/* <Text style={{position:'absolute', height: 20, width: 70, backgroundColor:'#333',bottom:-5,left:0, borderRadius: 5, textAlign: 'center', color: '#fff'}}>₹{entity.fare}</Text> */}
+            </View>
+            {/* <Text style={{fontWeight: '800', paddingTop: 5, fontSize: 12}}>{entity.time} mins</Text> */}
+          </View>)
+      });
+
+      var stars = [];
+
+      for (let j = 0; j < 5; j++) {
+        if(j+1<=this.state.rating) stars.push(<Icon name='star' key={j+1} type='material-community' size={40} color='#f39c12' onPress={()=>{
+          this.setState({rating:j+1});
+          console.log('YoyoPressed',j, this.state);
+        }} />);
+        else stars.push(<Icon name='star' key={j+1} type='material-community' size={40} color='#ddd'  onPress={()=>{
+          this.setState({rating:j+1});
+          console.log('YoyoPressed',j, this.state);
+        }} />);
       }
 
-      if ((entity.occupancy === 'NONE') || (entity.occupancy === 'HIGH')) {
-        ringColor = '#27ae60';
-      } else if (entity.occupancy === 'MID') {
-        ringColor = '#f1c40f';
-      } else if (entity.occupancy === 'LOW') {
-        ringColor = '#c0392b';
-      }
-
-
-
-
-      // console.log(entity.type, img);
       return (
-        <View key={id} style={styles.colDiv}>
-          {/* <View style={[styles.outerCircle, { backgroundColor: ringColor }]}> */}
-          <View style={[styles.outerCircle, { backgroundColor: '#eee', position: 'relative' }]}>
-            {img}
-            {/* <View style={{position:'absolute', height: 17, width: 17, backgroundColor: ringColor,right: 0, borderRadius: 10}}></View> */}
-            {/* <Text style={{position:'absolute', height: 20, width: 70, backgroundColor:'#333',bottom:-5,left:0, borderRadius: 5, textAlign: 'center', color: '#fff'}}>₹{entity.fare}</Text> */}
+        <View style={styles.slide}>
+          <Text style={styles.title}>Journey Complete!</Text>
+          <View style={[styles.rowDiv, { padding: 10, backgroundColor: '#333' }]}>
+            {modes}
           </View>
-          {/* <Text style={{fontWeight: '800', paddingTop: 5, fontSize: 12}}>{entity.time} mins</Text> */}
-        </View>)
-    });
+          <View style={[styles.rowDiv, { justifyContent: 'space-evenly', padding: 10 }]}>
+            <View style={styles.colDiv}>
+            <Icon name='leaf' type='material-community' size={50} color='#fff' containerStyle={{ backgroundColor: '#333', padding: 10, borderRadius: 50 }} />
+            <Text style={styles.subtitle}>2kg CO2 Saved</Text>
+            </View>
+            <View style={styles.colDiv}>
+            <Icon name='cash' type='material-community' size={50} color='#fff' containerStyle={{ backgroundColor: '#333', padding: 10, borderRadius: 50 }} />
+            <Text  style={styles.subtitle}>150₹ Saved</Text>
+            </View>
+            
+          </View>
+          <View style={[styles.rowDiv,{justifyContent:'space-evenly', padding: 20}]}>
+            {stars}
+          </View>
 
-    var stars = [];
-
-    for (let j = 0; j < 5; j++) {
-      if(j+1<=this.state.rating) stars.push(<Icon name='star' key={j+1} type='material-community' size={40} color='#f39c12' onPress={()=>{
-        this.setState({rating:j+1});
-        console.log('YoyoPressed',j, this.state);
-      }} />);
-      else stars.push(<Icon name='star' key={j+1} type='material-community' size={40} color='#ddd'  onPress={()=>{
-        this.setState({rating:j+1});
-        console.log('YoyoPressed',j, this.state);
-      }} />);
+          <Button title="Submit" buttonStyle={{ backgroundColor: '#333', marginTop: 10 }} />
+        </View>
+      );
     }
-
-    return (
-      <View style={styles.slide}>
-        <Text style={styles.title}>Journey Complete!</Text>
-        <View style={[styles.rowDiv, { padding: 10, backgroundColor: '#333' }]}>
-          {modes}
-        </View>
-        <View style={[styles.rowDiv, { justifyContent: 'space-evenly', padding: 10 }]}>
-          <View style={styles.colDiv}>
-          <Icon name='leaf' type='material-community' size={50} color='#fff' containerStyle={{ backgroundColor: '#333', padding: 10, borderRadius: 50 }} />
-          <Text style={styles.subtitle}>2kg CO2 Saved</Text>
-          </View>
-          <View style={styles.colDiv}>
-          <Icon name='cash' type='material-community' size={50} color='#fff' containerStyle={{ backgroundColor: '#333', padding: 10, borderRadius: 50 }} />
-          <Text  style={styles.subtitle}>150₹ Saved</Text>
-          </View>
-          
-        </View>
-        <View style={[styles.rowDiv,{justifyContent:'space-evenly', padding: 20}]}>
-          {stars}
-        </View>
-
-        <Button title="Submit" buttonStyle={{ backgroundColor: '#333', marginTop: 10 }} />
-      </View>
-    );
   }
 
   render() {
@@ -188,7 +191,7 @@ export class JourneyCompleteCard extends React.Component {
         contentContainerCustomStyle={styles.slides}
         ref={(c) => { this._carousel = c; }}
         data={this.state.journey}
-        renderItem={this._renderItem}
+        renderItem={this._renderItem(this)}
         sliderWidth={viewportWidth}
         //   sliderHeight={400}
 
@@ -198,3 +201,5 @@ export class JourneyCompleteCard extends React.Component {
     );
   }
 }
+
+export const JourneyCompleteCard = connect(({ journey }) => ({ journey }))(JourneyCompleteCardComponent);
