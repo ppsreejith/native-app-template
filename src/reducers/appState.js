@@ -30,8 +30,15 @@ const reducers = {
   APPSTATE_UPDATE_BUS_PREF_LOCAL: (state, { localPref }) => state.setIn(['busPref','LOCAL'], localPref),
   APPSTATE_UPDATE_METER_MELE: (state, { meterMele }) => state.setIn(['meterMeleAmount'], meterMele),
   APPSTATE_UPDATE_AUTO_BOOK: (state, { autoBookAuto }) => state.setIn(['autoBookAuto'], autoBookAuto),
-  APPSTATE_UPDATE_ACTIVE_SCREEN: (state, { activeScreen }) => state.setIn(['activeScreen'], activeScreen)
-
+  APPSTATE_UPDATE_ACTIVE_SCREEN: (state, { activeScreen }) => {
+    if(activeScreen=='JOURNEY_CHOOSE'){
+      state.setIn(['currentJourneyBrowse'],0);
+      state.setIn(['currentJourney'], null);
+      state.setIn(['maxLegs'], null);
+      state.setIn(['currentLeg'], 0);  
+    }
+    state.setIn(['activeScreen'], activeScreen)
+  }
 };
 
 export default createReducer(initialState, reducers);
