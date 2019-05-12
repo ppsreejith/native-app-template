@@ -41,47 +41,21 @@ class JourneyMaster extends React.Component {
      *   }
      * })*/
     this.state = {
-      currentJourney: this.props.journey.get('currentJourney'),
-      currentJourneyBrowse: this.props.journey.get('currentJourneyBrowse'),
-      currentLeg: this.props.journey.get('currentLeg'),
       isVisible: false,
-      journeys: this.props.journey.get('journeys').toJS(),
-      journey: [
-        {
-          entity: {
-            coordinate: {
-              latitude: 12.931093,
-              longitude: 77.628987,
-            },
-            type: "PERSON",
-          },
-          route: [{
-            latitude: 12.931093,
-            longitude: 77.628987,
-          }, {
-            latitude: 12.991093,
-            longitude: 77.828987,
-          }],
-          time: {
-            coordinate: {
-              latitude: 12.991093,
-              longitude: 77.828987,
-            },
-            time: new Date()
-          }
-        }
-      ]
     };
   }
 
   render() {
-    const currentJourneyBrowse = this.props.journey.get('currentJourneyBrowse');
+    const currentJourney = this.props.appState.get('currentJourney');
+    const currentJourneyBrowse = this.props.appState.get('currentJourneyBrowse');
+    const currentLeg = this.props.appState.get('currentLeg');
+  
     const journeys = this.props.journey.get('journeys').toJS();
     var componentToRender = '';
-    if (this.state.journeys) {
+    if (journeys) {
       // console.log('This is being rendered');
-      if (this.state.currentJourney!=null) {
-        if (this.state.currentLeg!=null) {
+      if (currentJourney!=null) {
+        if (currentLeg!=null) {
           componentToRender = (<View style={styles.container}>
             <JourneyProgressCardTop/>
             <JourneyProgressCardBottom/>
@@ -133,4 +107,4 @@ class JourneyMaster extends React.Component {
   }
 }
 
-export default connect(({ journey }) => ({ journey }))(JourneyMaster);
+export default connect(({ journey, appState }) => ({ journey, appState }))(JourneyMaster);

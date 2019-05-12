@@ -90,8 +90,7 @@ class JourneyCompleteCardComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      journey: [this.props.journey.get('journeys').toJS()[this.props.journey.get('currentJourney')]],
-      currentJourney: this.props.journey.get('currentJourney'),
+      journey: [this.props.journey.get('journeys').toJS()[this.props.appState.get('currentJourney')]],
     }
 
     // this._renderItem = this._renderItem.bind(this);
@@ -149,11 +148,11 @@ class JourneyCompleteCardComponent extends React.Component {
       for (let j = 0; j < 5; j++) {
         if(j+1<=this.state.rating) stars.push(<Icon name='star' key={j+1} type='material-community' size={40} color='#f39c12' onPress={()=>{
           this.setState({rating:j+1});
-          console.log('YoyoPressed',j, this.state);
+          // console.log('YoyoPressed',j, this.state);
         }} />);
         else stars.push(<Icon name='star' key={j+1} type='material-community' size={40} color='#ddd'  onPress={()=>{
           this.setState({rating:j+1});
-          console.log('YoyoPressed',j, this.state);
+          // console.log('YoyoPressed',j, this.state);
         }} />);
       }
 
@@ -202,4 +201,4 @@ class JourneyCompleteCardComponent extends React.Component {
   }
 }
 
-export const JourneyCompleteCard = connect(({ journey }) => ({ journey }))(JourneyCompleteCardComponent);
+export const JourneyCompleteCard = connect(({ journey, appState }) => ({ journey, appState }))(JourneyCompleteCardComponent);
