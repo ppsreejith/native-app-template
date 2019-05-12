@@ -2,12 +2,12 @@ import axios from 'axios';
 import _ from 'lodash';
 import queryString from 'query-string';
 
-export const SERVER = 'http://json.io';
+export const SERVER = 'http://localhost:9999';
 
 const decideRequest = (prom, resolve, reject) =>
   prom
     .then(res =>
-      (_.get(res, 'status') == 200
+      (_.get(res, 'status') === 200
         ? resolve(_.get(res, 'data', {}))
         : reject(_.get(res, 'data', res))))
     .catch(err => reject(err));
