@@ -7,11 +7,10 @@ export const SERVER = 'http://json.io';
 const decideRequest = (prom, resolve, reject) =>
   prom
     .then(res =>
-      (_.get(res, 'data.success')
-        ? resolve(_.get(res, 'data'))
-        : reject(_.get(res, 'data.message', res))))
-    .catch(err =>
-      reject(_.get(err, 'response.data.message', err)));
+      (_.get(res, 'status') == 200
+        ? resolve(_.get(res, 'data', {}))
+        : reject(_.get(res, 'data', res))))
+    .catch(err => reject(err));
 
 const addJsonParams = (url, data) => {
   if (_.isEmpty(data)) {
@@ -35,7 +34,7 @@ export default ({
   }
 
   return new Promise((resolve, reject) => {
-    const axiosPromise = axios({
+    const axiosPromise = new axios({
       method: method || 'GET',
       baseURL: baseURL || SERVER,
       url,
