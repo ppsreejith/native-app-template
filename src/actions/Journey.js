@@ -176,7 +176,8 @@ export const bookAuto = (dispatch, getState) => {
       payload: {
         journey: currentJourney,
         leg: currentLeg,
-        otp: res.otp
+        otp: res.otp,
+        bid_id: res.id
       }
     })
   })

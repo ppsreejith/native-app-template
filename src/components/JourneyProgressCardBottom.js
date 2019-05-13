@@ -183,7 +183,7 @@ class JourneyProgressCardBottomComponent extends React.Component {
       else if (item.journey[legId].entity.type === 'AUTO') {
         const entity = this.props.journey.get('journeys').toJS()[this.props.appState.get('currentJourney')].journey[legId].entity;
 
-        if (entity.driver_id) {
+        if (entity.vehicleNo) {
           img = (<View style={[styles.modeImgsView]}>
             <Text style={{ fontWeight: '800', fontSize: 20, backgroundColor: '#f1c40f', paddingLeft: 5, paddingRight: 5, borderRadius: 5, textAlign: 'center' }}><Text style={{ fontSize: 10 }}>OTP{`\n`}</Text>{entity.otp}</Text>
             <Image source={require('../assets/AUTO.png')} style={[styles.modeImgs]} />

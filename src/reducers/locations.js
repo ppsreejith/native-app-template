@@ -7,7 +7,7 @@ const initialState = Immutable.fromJS({"predictions":[{"description":"Kankaria L
 const reducers = {
   LOCATIONS_RECEIVED: (state, { predictions }) => state.set('predictions', Immutable.fromJS(predictions)),
   LOCATION_SELECTED: (state, { coordinates, description, reason }) => state.setIn(['selected', reason], { coordinates, description }),
-  LOCATION_INITIALIZE: (state) => console.log(JSON.stringify(state.toJS())) || initialState
+  LOCATION_INITIALIZE: (state) => initialState
 };
 
 export default createReducer(initialState, reducers);

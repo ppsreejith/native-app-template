@@ -195,8 +195,8 @@ const reducers = {
     currentLeg: null,
     journeys
   }),
-  JOURNEY_SET_AUTO_BID: (state, { journey, leg, otp }) => state.updateIn(['journeys', journey, 'journey', leg, 'entity'], entity => {
-    return entity.set('bidMade', true).set('otp', otp);
+  JOURNEY_SET_AUTO_BID: (state, { journey, leg, otp, bid_id }) => state.updateIn(['journeys', journey, 'journey', leg, 'entity'], entity => {
+    return entity.set('bidMade', true).set('otp', otp).set('bid_id', bid_id);
   }),
   JOURNEY_SET_AUTO_ACCEPTED: (state, { journey, leg, driver_id }) => state.updateIn(['journeys', journey, 'journey', leg, 'entity'], entity => {
     return entity.set('driverName', 'Auto Raja').set('vehicleNo', driver_id);
