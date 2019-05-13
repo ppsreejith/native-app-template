@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import { StyleSheet, Text, View, TouchableNativeFeedback } from 'react-native';
 import JourneyMap from '../components/JourneyMap';
@@ -79,7 +80,6 @@ class JourneyMaster extends React.Component {
 
     const journeys = this.props.journey.get('journeys').toJS();
     let componentToRender = '';
-    console.log("Journey is", journeys[currentJourneyBrowse].journey)
     var toShowOnMap = '';
     if (activeScreen == 'LOCATION_SELECT') {
       const where_from = this.props.locations.getIn(['selected', 'from', 'description']) || "Where from?";
@@ -127,7 +127,6 @@ class JourneyMaster extends React.Component {
         </Overlay>
       </View>);
       toShowOnMap = [];
-      // toShowOnMap = journeys[currentJourneyBrowse].journey;
     } if (activeScreen == 'JOURNEY_CHOOSE') {
       componentToRender = (<View style={styles.container}>
         <JourneyCard></JourneyCard>
@@ -155,7 +154,7 @@ class JourneyMaster extends React.Component {
           <SettingsView></SettingsView>
         </Overlay>
       </View>);
-      toShowOnMap = journeys[currentJourneyBrowse].journey;
+      toShowOnMap = _.get(journeys, [currentJourneyBrowse, 'journey'], []);
     }
     else if (activeScreen == 'JOURNEY_PROGRESS') {
       componentToRender = (<View style={styles.container}>

@@ -182,13 +182,13 @@ class JourneyCompleteCardComponent extends React.Component {
             this.props.dispatch({
               type: 'APPSTATE_UPDATE_ACTIVE_SCREEN',
               payload: {
-                activeScreen: 'JOURNEY_CHOOSE'
+                activeScreen: 'LOCATION_SELECT'
               }
             });
             this.props.dispatch({
               type: 'JOURNEY_INITIALIZE',
               payload: {
-                journeys: null
+                journeys: []
               }
             });
           }}/>
