@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Animated, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Animated, Dimensions, ActivityIndicator } from 'react-native';
 import _ from 'lodash';
 import Carousel from 'react-native-snap-carousel';
 // import { JOURNEYS } from '../static/journeys';
@@ -90,7 +90,7 @@ class JourneyProgressCardBottomComponent extends React.Component {
     super(props);
     this.state = {
       journey: [this.props.journey.get('journeys').toJS()[this.props.appState.get('currentJourney')]],
-     
+
     }
 
     this._renderItem = this._renderItem.bind(this);
@@ -118,7 +118,7 @@ class JourneyProgressCardBottomComponent extends React.Component {
               // console.log('legbutton',leg, curJourney);
 
 
-              if(legId==maxLegs){
+              if (legId == maxLegs) {
                 legId = null;
                 this.props.dispatch({
                   type: 'APPSTATE_UPDATE_ACTIVE_SCREEN',
@@ -127,7 +127,7 @@ class JourneyProgressCardBottomComponent extends React.Component {
                   }
                 });
               }
-              else{
+              else {
                 legId = legId + 1;
               }
               this.props.dispatch({
@@ -153,67 +153,88 @@ class JourneyProgressCardBottomComponent extends React.Component {
         </View>)
         var finalActionButtons = (<View style={[styles.rowDiv, { padding: 10, paddingTop: 0 }]}>
           <Button title='Navigate' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
-          <Button title='Finished Leg' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} 
-          onPress={() => {
-            // console.log('legbutton', this.props.journey.get('currentLeg'));  
-            if(legId==maxLegs){
-              legId = null;
+          <Button title='Finished Leg' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }}
+            onPress={() => {
+              // console.log('legbutton', this.props.journey.get('currentLeg'));  
+              if (legId == maxLegs) {
+                legId = null;
+                this.props.dispatch({
+                  type: 'APPSTATE_UPDATE_ACTIVE_SCREEN',
+                  payload: {
+                    activeScreen: 'JOURNEY_END'
+                  }
+                });
+              }
+              else {
+                legId = legId + 1;
+              }
               this.props.dispatch({
-                type: 'APPSTATE_UPDATE_ACTIVE_SCREEN',
+                type: 'APPSTATE_UPDATE_CURRENT_LEG',
                 payload: {
-                  activeScreen: 'JOURNEY_END'
+                  currentLeg: legId
                 }
               });
-            }
-            else{
-              legId = legId + 1;
-            }
-            this.props.dispatch({
-              type: 'APPSTATE_UPDATE_CURRENT_LEG',
-              payload: {
-                currentLeg: legId
-              }
-            });
-          }} />
+            }} />
         </View>)
       }
 
 
       else if (item.journey[legId].entity.type === 'AUTO') {
-        img = (<View style={[styles.modeImgsView]}>
-          <Text style={{ fontWeight: '800', fontSize: 20, backgroundColor: '#f1c40f', paddingLeft: 5, paddingRight: 5, borderRadius: 5, textAlign: 'center' }}><Text style={{ fontSize: 10 }}>OTP{`\n`}</Text>{item.journey[legId].entity.OTP}</Text>
-          <Image source={require('../assets/AUTO.png')} style={[styles.modeImgs]} />
-          <Text style={{ fontSize: 10 }}>{item.journey[legId].entity.driverName}</Text>
-          <Text style={{ fontSize: 10 }}>{item.journey[legId].entity.vehicleNo}</Text>
-        </View>);
-        var actionButtons = (<View style={[{ alignItems: 'stretch', justifyContent: 'space-between', flexDirection: 'row', width: '100%', paddingTop: 10 }]}>
-          <Button title='Pay' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
-          <Button title='Call Driver' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
-        </View>)
+        const entity = this.props.journey.get('journeys').toJS()[this.props.appState.get('currentJourney')].journey[legId].entity;
+
+        if (entity.otp) {
+          img = (<View style={[styles.modeImgsView]}>
+            <Text style={{ fontWeight: '800', fontSize: 20, backgroundColor: '#f1c40f', paddingLeft: 5, paddingRight: 5, borderRadius: 5, textAlign: 'center' }}><Text style={{ fontSize: 10 }}>OTP{`\n`}</Text>{entity.otp}</Text>
+            <Image source={require('../assets/AUTO.png')} style={[styles.modeImgs]} />
+            <Text style={{ fontSize: 10 }}>{entity.driverName}</Text>
+            <Text style={{ fontSize: 10 }}>{entity.vehicleNo}</Text>
+          </View>);
+          var actionButtons = (<View style={[{ alignItems: 'stretch', justifyContent: 'space-between', flexDirection: 'row', width: '100%', paddingTop: 10 }]}>
+            <Button title='Pay' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
+            <Button title='Call Driver' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
+          </View>)
+        }
+        else if (entity.bidMade){
+          img = (<View style={[styles.modeImgsView]}>
+            <Image source={require('../assets/AUTO.png')} style={[styles.modeImgs]} />
+          </View>);
+           var actionButtons = (  <ActivityIndicator size="large" color="#333" />);
+        }
+        else{
+          img = (<View style={[styles.modeImgsView]}>
+            <Image source={require('../assets/AUTO.png')} style={[styles.modeImgs]} />
+          </View>);
+           var actionButtons = (<View style={[{ alignItems: 'stretch', justifyContent: 'space-between', flexDirection: 'row', width: '100%', paddingTop: 10 }]}>
+           <Button title='Book Auto' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
+         </View>)
+        }
+
+
+
         var finalActionButtons = (<View style={[styles.rowDiv, { padding: 10, paddingTop: 0 }]}>
           <Button title='Navigate' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
-          <Button title='Finished Leg' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} 
-          onPress={() => {
-              
-            if(legId==maxLegs){
-              legId = null;
+          <Button title='Finished Leg' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }}
+            onPress={() => {
+
+              if (legId == maxLegs) {
+                legId = null;
+                this.props.dispatch({
+                  type: 'APPSTATE_UPDATE_ACTIVE_SCREEN',
+                  payload: {
+                    activeScreen: 'JOURNEY_END'
+                  }
+                });
+              }
+              else {
+                legId = legId + 1;
+              }
               this.props.dispatch({
-                type: 'APPSTATE_UPDATE_ACTIVE_SCREEN',
+                type: 'APPSTATE_UPDATE_CURRENT_LEG',
                 payload: {
-                  activeScreen: 'JOURNEY_END'
+                  currentLeg: legId
                 }
               });
-            }
-            else{
-              legId = legId + 1;
-            }
-            this.props.dispatch({
-              type: 'APPSTATE_UPDATE_CURRENT_LEG',
-              payload: {
-                currentLeg: legId
-              }
-            });
-          }} />
+            }} />
         </View>)
       }
 

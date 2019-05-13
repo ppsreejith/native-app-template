@@ -185,6 +185,12 @@ class JourneyCompleteCardComponent extends React.Component {
                 activeScreen: 'JOURNEY_CHOOSE'
               }
             });
+            this.props.dispatch({
+              type: 'JOURNEY_INITIALIZE',
+              payload: {
+                journeys: null
+              }
+            });
           }}/>
         </View>
       );

@@ -1,6 +1,7 @@
 import React from 'react'
 import UnitMap from '../components/UnitMap';
 import _ from 'lodash';
+// import console = require('console');
 
 const JourneyMap = ({journey, style}) => {
   const params = {
@@ -9,6 +10,7 @@ const JourneyMap = ({journey, style}) => {
     times: _.map(journey, ({time}) => time),
     style,
   };
+  console.log(params);
   return (<UnitMap {...params} />)
 }
 

@@ -102,7 +102,11 @@ const initialState = Immutable.fromJS({
             occupancy: "NONE",
             distance: 2,
             fare: 26,
-            time: 10
+            time: 10,
+            // bidMade : true,
+            // otp : '12345',
+            // driverName : 'Kumaran',
+            // vehicleNo : 'LOLO',
           },
           route: [{
             latitude: 12.925138,

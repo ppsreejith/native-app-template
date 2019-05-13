@@ -34,6 +34,13 @@ const getRegion = ({maxLat, minLat, maxLng, minLng}) => {
 }
 
 const Map = ({entities, routes, times, style}) => {
+  if(entities.length==0){
+    return (
+      <AnimatedMap
+          style={[styles.map, style]}>
+      </AnimatedMap>
+    )
+  }
   const getMaxLat = getComparator(Number.NEGATIVE_INFINITY, _.gt);
   const getMaxLng = getComparator(Number.NEGATIVE_INFINITY, _.gt);
   const getMinLat = getComparator(Number.POSITIVE_INFINITY, _.lt);

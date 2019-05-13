@@ -6,7 +6,7 @@ const initialState = Immutable.fromJS({
   currentJourney: null,
   maxLegs: null,
   currentLeg: 0,
-  activeScreen:'JOURNEY_CHOOSE',
+  activeScreen:'LOCATION_SELECT',
 
   maxWalkingValue: 0.2,
   autoBookAuto: true,
