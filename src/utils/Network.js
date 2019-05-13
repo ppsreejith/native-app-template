@@ -25,7 +25,7 @@ const addJsonParams = (url, data) => {
   );
 };
 
-export default ({
+export const Network = ({
   method, url, headers, baseURL, data
 }) => {
   if (!method || method == 'GET') {
@@ -33,19 +33,20 @@ export default ({
     url = addJsonParams(url, data);
   }
 
-  return new Promise((resolve, reject) => {
-    const axiosPromise = new axios({
-      method: method || 'GET',
-      baseURL: baseURL || SERVER,
-      url,
-      data,
-      headers: _.extend(
-        {
-          'app-version': '1.0.0'
-        },
-        headers
-      )
-    });
-    decideRequest(axiosPromise, resolve, reject);
+  return new axios({
+    method: method || 'GET',
+    baseURL: baseURL || SERVER,
+    url,
+    data,
+    headers: _.extend(
+      {
+        'app-version': '1.0.0'
+      },
+      headers
+    )
   });
 };
+
+export default (params) => new Promise(
+  (resolve, reject) => decideRequest(Network(params), resolve, reject)
+);
