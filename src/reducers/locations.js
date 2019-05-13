@@ -11,6 +11,7 @@ const initialState = Immutable.fromJS({
 const reducers = {
   LOCATIONS_RECEIVED: (state, { predictions }) => state.set('predictions', Immutable.fromJS(predictions)),
   LOCATION_SELECTED: (state, { coordinates, description, reason }) => state.setIn(['selected', reason], { coordinates, description }),
+  LOCATION_INITIALIZE: () => initialState
 };
 
 export default createReducer(initialState, reducers);

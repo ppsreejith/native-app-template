@@ -52,6 +52,10 @@ export const selectPlace = (place, reason) => (dispatch, getState) => {
           toLat,
           toLng
         });
+        dispatch({
+          type: "LOCATION_INITIALIZE",
+          payload: {}
+        })
       }
     })
     .catch(err => console.log('error is', err));
