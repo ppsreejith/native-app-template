@@ -33,6 +33,8 @@ const getRegion = ({maxLat, minLat, maxLng, minLng}) => {
   }
 }
 
+const getUniqueKey = key => `${key}-${Date.now()}`
+
 const Map = ({entities, routes, times, style}) => {
   const getMaxLat = getComparator(Number.NEGATIVE_INFINITY, _.gt);
   const getMaxLng = getComparator(Number.NEGATIVE_INFINITY, _.gt);
@@ -48,7 +50,7 @@ const Map = ({entities, routes, times, style}) => {
   const entityMarkers = _.map(entities, (entity, key) => {
     getMinMax(entity.coordinate);
     return (
-      <EntityMarker key={key} {...entity} />
+      <EntityMarker key={getUniqueKey(key)} {...entity} />
     );
   });
   
@@ -59,7 +61,7 @@ const Map = ({entities, routes, times, style}) => {
         type: 'DESTINATION'
       };
     
-      return(<EntityMarker key={key} {...ent} />);
+      return(<EntityMarker key={getUniqueKey(key)} {...ent} />);
     }
   });
 
@@ -70,7 +72,7 @@ const Map = ({entities, routes, times, style}) => {
         type: 'HOME'
       };
     
-      return(<EntityMarker key={key} {...ent} />);
+      return(<EntityMarker key={getUniqueKey(key)} {...ent} />);
     }
   });
 
@@ -81,11 +83,9 @@ const Map = ({entities, routes, times, style}) => {
         type: 'STOP'
       };
     
-      return(<EntityMarker key={key} {...ent} />);
+      return(<EntityMarker key={getUniqueKey(key)} {...ent} />);
     }
   });
-
-
 
 
   const routeMarkers = _.map(routes, (route, key) => {
@@ -97,7 +97,6 @@ const Map = ({entities, routes, times, style}) => {
     if(route[1]=='AUTO'){
       color = '#2980b9';
       dashpattern = null;
-
     }
     else if(route[1]=='BUS'){
       color = '#8e44ad';
@@ -110,17 +109,17 @@ const Map = ({entities, routes, times, style}) => {
     }
     return (
       <Polyline
-          key={key}
+          key={getUniqueKey(key)}
           coordinates={route[0]}
           strokeColor={color}
-          strokeWidth	={strokeWidth}
+          strokeWidth={strokeWidth}
           lineDashPattern={dashpattern}/>
     )
   });
   const timeMarkers = _.map(times, (time, key) => {
     getMinMax(time.coordinate);
     return (
-      <TimeMarker key={key} {...time} />
+      <TimeMarker key={getUniqueKey(key)} {...time} />
     )
   });
 

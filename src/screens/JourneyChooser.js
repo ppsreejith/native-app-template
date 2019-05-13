@@ -70,7 +70,6 @@ class JourneyChooser extends React.Component {
     return (
       <View style={styles.container}>
         <JourneyMap journey={this.state.journey} />
-        {/* <JourneyCard journeys={JOURNEYS}></JourneyCard> */}
         <JourneyCard></JourneyCard>
         <View style={styles.filter}>
 

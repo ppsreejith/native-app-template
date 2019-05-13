@@ -49,8 +49,7 @@ class JourneyMaster extends React.Component {
      * });*/
     this.state = {
       isVisible: false,
-    };
-    
+    };    
   }
 
   render() {
@@ -60,59 +59,13 @@ class JourneyMaster extends React.Component {
     const activeScreen = this.props.appState.get('activeScreen');
   
     const journeys = this.props.journey.get('journeys').toJS();
-    var componentToRender = '';
-    // if (journeys) {
-    //   // console.log('This is being rendered');
-    //   if (currentJourney!=null) {
-    //     if (currentLeg!=null) {
-    //       componentToRender = (<View style={styles.container}>
-    //         <JourneyProgressCardTop/>
-    //         <JourneyProgressCardBottom/>
-    //       </View>);
-    //     }
-    //     else{
-    //       componentToRender = (<View style={styles.container}>
-    //         <JourneyCompleteCard/>
-    //       </View>);
-    //     }
-    //   }
-    //   else {
-    //     componentToRender = (<View style={styles.container}>
-    //       <JourneyCard></JourneyCard>
-    //       <View style={styles.filter}>
-
-    //         <Button
-    //           icon={
-    //             <Icon
-    //               name="cog"
-    //               size={30}
-    //               type='font-awesome'
-    //               color="white"
-    //             />
-    //           }
-    //           onPress={() => {
-    //             this.setState({ isVisible: true });
-    //           }}
-    //           title=""
-    //           buttonStyle={{ borderRadius: 50, padding: 9, paddingRight: 10, paddingLeft: 10, backgroundColor: '#333' }}
-    //         />
-    //       </View>
-    //       <Overlay
-    //         isVisible={this.state.isVisible}
-    //         onBackdropPress={() => this.setState({ isVisible: false })}
-    //       >
-    //         <SettingsView></SettingsView>
-    //       </Overlay>
-    //     </View>);
-    //   }
-    // }
+    let componentToRender = '';
     console.log("Journey is", journeys[currentJourneyBrowse].journey)
-    var toShowOnMap = '';
+    let toShowOnMap = '';
     if (activeScreen=='JOURNEY_CHOOSE') {
       componentToRender = (<View style={styles.container}>
         <JourneyCard></JourneyCard>
         <View style={styles.filter}>
-
           <Button
             icon={
               <Icon
@@ -144,19 +97,15 @@ class JourneyMaster extends React.Component {
           <JourneyProgressCardBottom/>
         </View>);
         toShowOnMap = [journeys[currentJourney].journey[currentLeg]];
-        // toShowOnMap = journeys[currentJourneyBrowse].journey;
-        // console.log('PROGRESS',[{journey:[journeys[currentJourney].journey[currentLeg]]}]);
     }
     else if (activeScreen=='JOURNEY_END') {
       componentToRender = (<View style={styles.container}>
         <JourneyCompleteCard/>
       </View>);
-      // toShowOnMap = journeys[currentJourneyBrowse].journey;
       toShowOnMap = journeys[currentJourney].journey;
     } 
     return (
       <View style={styles.container}>
-        {/* <JourneyMap journey={this.state.journey} /> */}
         <JourneyMap journey={toShowOnMap} />
         {componentToRender}
       </View>
