@@ -10,7 +10,6 @@ import { SettingsView } from '../components/SettingsView';
 import { JOURNEYS, CURRRENT_JOURNEY } from '../static/journeys';
 import { Icon, Overlay, Button } from 'react-native-elements'
 import Navigation from '../utils/Navigation';
-import { fetchJourneys } from '../actions/Journey';
 // import console = require('console');
 // import console = require('console');
 
@@ -26,12 +25,20 @@ const styles = StyleSheet.create({
     top: 5,
     right: 5
   },
-  userInput: {
+  userInputFrom: {
     width: '100%',
     alignItems: 'center',
     justifyContent: 'flex-start',
     position: 'absolute',
     top: 50,
+    padding: 10
+  },
+  userInputTo: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    position: 'absolute',
+    top: 100,
     padding: 10
   },
   whereTo: {
@@ -59,12 +66,6 @@ class JourneyMaster extends React.Component {
      *     leg: 3
      *   }
      * })*/
-    /* fetchJourneys({
-     *   fromLat: 23.011295,
-     *   fromLng: 72.506192,
-     *   toLat: 23.027547,
-     *   toLng: 72.598136
-     * });*/
     this.state = {
       isVisible: false,
     };    
@@ -80,73 +81,76 @@ class JourneyMaster extends React.Component {
     let componentToRender = '';
     console.log("Journey is", journeys[currentJourneyBrowse].journey)
     var toShowOnMap = '';
-    // <View style={styles.userInput}>
-    //         <TouchableNativeFeedback onPress={() => Navigation.navigate('Locate')}>
-    //           <View style={styles.whereTo}>
-    //             <Text style={styles.navText}>Where to?</Text>
-    //           </View>
-    //         </TouchableNativeFeedback>
-    //       </View>
     if (activeScreen == 'LOCATION_SELECT') {
+      const where_from = this.props.locations.getIn(['selected', 'from', 'description']) || "Where from?";
+      const where_to = this.props.locations.getIn(['selected', 'to', 'description']) || "Where to?";
       componentToRender = (<View style={styles.container}>
-        <View style={styles.userInput}>
-            <TouchableNativeFeedback onPress={() => Navigation.navigate('Locate')}>
-               <View style={styles.whereTo}>
-                 <Text style={styles.navText}>Where to?</Text>
-               </View>
-             </TouchableNativeFeedback>
-          </View>
+        <View style={styles.userInputFrom}>
+          <TouchableNativeFeedback onPress={() => Navigation.navigate('Locate', {reason: 'from'})}>
+            <View style={styles.whereTo}>
+              <Text style={styles.navText}>{where_from}</Text>
+            </View>
+          </TouchableNativeFeedback>
+        </View>
+
+        <View style={styles.userInputTo}>
+          <TouchableNativeFeedback onPress={() => Navigation.navigate('Locate', { reason: 'to' })}>
+            <View style={styles.whereTo}>
+              <Text style={styles.navText}>{where_to}</Text>
+            </View>
+          </TouchableNativeFeedback>
+        </View>
         
         <View style={styles.filter}>
 
           <Button
-            icon={
-              <Icon
+              icon={
+                <Icon
                 name="cog"
                 size={30}
                 type='font-awesome'
                 color="white"
-              />
-            }
-            onPress={() => {
-              this.setState({ isVisible: true });
-            }}
-            title=""
-            buttonStyle={{ borderRadius: 50, padding: 9, paddingRight: 10, paddingLeft: 10, backgroundColor: '#333' }}
+                       />
+                   }
+              onPress={() => {
+                  this.setState({ isVisible: true });
+                }}
+              title=""
+              buttonStyle={{ borderRadius: 50, padding: 9, paddingRight: 10, paddingLeft: 10, backgroundColor: '#333' }}
           />
         </View>
         <Overlay
-          isVisible={this.state.isVisible}
-          onBackdropPress={() => this.setState({ isVisible: false })}
+            isVisible={this.state.isVisible}
+            onBackdropPress={() => this.setState({ isVisible: false })}
         >
           <SettingsView></SettingsView>
         </Overlay>
-        </View>);
-        toShowOnMap = [];
-        // toShowOnMap = journeys[currentJourneyBrowse].journey;
+      </View>);
+      toShowOnMap = [];
+      // toShowOnMap = journeys[currentJourneyBrowse].journey;
     } if (activeScreen == 'JOURNEY_CHOOSE') {
       componentToRender = (<View style={styles.container}>
         <JourneyCard></JourneyCard>
         <View style={styles.filter}>
           <Button
-            icon={
-              <Icon
+              icon={
+                <Icon
                 name="cog"
                 size={30}
                 type='font-awesome'
                 color="white"
-              />
-            }
-            onPress={() => {
-              this.setState({ isVisible: true });
-            }}
-            title=""
-            buttonStyle={{ borderRadius: 50, padding: 9, paddingRight: 10, paddingLeft: 10, backgroundColor: '#333' }}
+                       />
+                   }
+              onPress={() => {
+                  this.setState({ isVisible: true });
+                }}
+              title=""
+              buttonStyle={{ borderRadius: 50, padding: 9, paddingRight: 10, paddingLeft: 10, backgroundColor: '#333' }}
           />
         </View>
         <Overlay
-          isVisible={this.state.isVisible}
-          onBackdropPress={() => this.setState({ isVisible: false })}
+            isVisible={this.state.isVisible}
+            onBackdropPress={() => this.setState({ isVisible: false })}
         >
           <SettingsView></SettingsView>
         </Overlay>
@@ -177,4 +181,4 @@ class JourneyMaster extends React.Component {
   }
 }
 
-export default connect(({ journey, appState }) => ({ journey, appState }))(JourneyMaster);
+export default connect(({ journey, appState, locations }) => ({ journey, appState, locations }))(JourneyMaster);

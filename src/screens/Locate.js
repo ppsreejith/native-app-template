@@ -11,8 +11,9 @@ class Locate extends React.Component {
   };
   
   render() {
+    const reason = this.props.navigation.state.params.reason;
     const predictions = this.props.locations.get('predictions');
-    console.log('predictions are', predictions);
+    console.log("seleccted is", this.props.locations.get('selected').toJS());
     const onChangeText = _.debounce(input => this.props.dispatch(loadPlaces({ input })), 100);
     return (
       <View style={styles.container}>
@@ -24,7 +25,7 @@ class Locate extends React.Component {
         />
         <FlatList
             data={predictions && predictions.toJS()}
-            renderItem={({item}) => <LocateItem item={item}/>}
+            renderItem={({item}) => <LocateItem item={item} reason={reason}/>}
         />
       </View>
     );

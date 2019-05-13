@@ -5,10 +5,27 @@ import _ from 'lodash';
 import Navigation from '../utils/Navigation';
 import { selectPlace } from '../actions/locations';
 
-const ListItem = ({ item, dispatch }) => {
+const ListItem = ({ item, dispatch, reason, locations }) => {
   const onSelect = _.flow([
-    () => dispatch(selectPlace(item)),
-    () => Navigation.back()
+    () => dispatch(selectPlace(item, reason )),
+    () => {
+      Navigation.back()
+      let transition = false;
+      if (reason == 'from' && !_.isEmpty(locations.getIn(['selected', 'to']))) {
+        transition = true;
+      }
+      if (reason == 'to' && !_.isEmpty(locations.getIn(['selected', 'from']))) {
+        transition = true;
+      }
+      if (transition) {
+        dispatch({
+          type: "APPSTATE_UPDATE_ACTIVE_SCREEN",
+          payload: {
+            activeScreen: "JOURNEY_CHOOSE"
+          }
+        })
+      }
+    }
   ]);
   return (
     <View style={[styles.itemPadding, styles.ListValue]}>
@@ -35,4 +52,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default connect()(ListItem);
+export default connect(({ locations }) => ({ locations }))(ListItem);
