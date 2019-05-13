@@ -5,6 +5,27 @@ import Store from '../utils/Store';
 
 const time = 1556460882000;
 
+function distance(lat1, lon1, lat2, lon2) {
+  if ((lat1 == lat2) && (lon1 == lon2)) {
+    return 0;
+  }
+  else {
+    var radlat1 = Math.PI * lat1/180;
+    var radlat2 = Math.PI * lat2/180;
+    var theta = lon1-lon2;
+    var radtheta = Math.PI * theta/180;
+    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    if (dist > 1) {
+      dist = 1;
+    }
+    dist = Math.acos(dist);
+    dist = dist * 180/Math.PI;
+    dist = dist * 60 * 1.1515;
+    dist = dist * 1.609344
+    return dist;
+  }
+}
+
 export const fetchJourneys = ({
   fromLat,
   fromLng,
@@ -72,12 +93,19 @@ export const fetchJourneys = ({
                           latitude: toLat,
                           longitude: toLng
                         };
+                        const autoKm = Store.getState().appState.get('maxWalkingValue');
+                        const firstStopDistance = distance(
+                          firstJourneyStart.latitude,
+                          firstJourneyStart.longitude,
+                          firstJourneyEnd.latitude,
+                          firstJourneyEnd.longitude,
+                        );
                         const firstJourney = {
                           entity: {
                             coordinate: firstJourneyStart,
-                            type: "PERSON",
+                            type: firstStopDistance > autoKm ? "AUTO" : "PERSON",
                             occupancy: "NONE",
-                            distance: 0.3,
+                            distance: firstStopDistance,
                             fare: 0,
                             time: 15
                           },
@@ -87,12 +115,18 @@ export const fetchJourneys = ({
                             time: new Date()
                           }
                         };
+                        const lastStopDistance = distance(
+                          lastJourneyStart.latitude,
+                          lastJourneyStart.longitude,
+                          lastJourneyEnd.latitude,
+                          lastJourneyEnd.longitude,
+                        );
                         const lastJourney = {
                           entity: {
                             coordinate: lastJourneyStart,
-                            type: "PERSON",
+                            type: lastStopDistance > autoKm ? "AUTO" : "PERSON",
                             occupancy: "NONE",
-                            distance: 0.3,
+                            distance: lastStopDistance,
                             fare: 0,
                             time: 15
                           },
