@@ -63,7 +63,7 @@ const Map = ({entities, routes, times, style}) => {
     }
     else if(key==routes.length-1){
       const ent = {
-        coordinate : route[0][routes[0].length-1],
+        coordinate : route[0][route[0].length-1],
         type: 'DESTINATION'
       };
     
