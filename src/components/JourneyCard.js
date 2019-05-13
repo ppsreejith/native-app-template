@@ -80,8 +80,7 @@ class JourneyCardComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isVisible: false,
-      journeys: this.props.journey.get('journeys').toJS()
+      isVisible: false
     }
   }
 
@@ -194,7 +193,7 @@ class JourneyCardComponent extends React.Component {
         containerCustomStyle={styles.container}
         contentContainerCustomStyle={styles.slides}
         ref={(c) => { this._carousel = c; }}
-        data={this.state.journeys}
+        data={this.props.journey.get('journeys').toJS()}
         renderItem={this._renderItem(this)}
         sliderWidth={viewportWidth}
         onSnapToItem={(i)=>{

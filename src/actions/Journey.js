@@ -23,8 +23,13 @@ export const fetchJourneys = ({
                         Segments,
                         Vehicles
                       }, index) => {
+                        const segmentRoutes = _.chain(Segments)
+                                               .map(({FromStop}) => _.get(FromStop, "LineRef"))
+                                               .uniq()
+                                               .value();
                         const groupedSegments = _.groupBy(Segments, "FromStop.LineRef");
-                        const journey = _.map(groupedSegments, (segments) => {
+                        const busJourney = _.map(segmentRoutes, (segmentRoute) => {
+                          const segments = groupedSegments[segmentRoute];
                           const route = _.chain(
                             segments
                           ).map(({
@@ -55,6 +60,49 @@ export const fetchJourneys = ({
                             time
                           }
                         });
+                        const firstRoute = _.first(busJourney).route;
+                        const firstJourneyStart = {
+                          latitude: fromLat,
+                          longitude: fromLng
+                        };
+                        const firstJourneyEnd = _.first(firstRoute);
+                        const lastRoute = _.last(busJourney).route;
+                        const lastJourneyStart = _.last(lastRoute);
+                        const lastJourneyEnd = {
+                          latitude: toLat,
+                          longitude: toLng
+                        };
+                        const firstJourney = {
+                          entity: {
+                            coordinate: firstJourneyStart,
+                            type: "PERSON",
+                            occupancy: "NONE",
+                            distance: 0.3,
+                            fare: 0,
+                            time: 15
+                          },
+                          route: [firstJourneyStart, firstJourneyEnd],
+                          time: {
+                            coordinate: firstJourneyEnd,
+                            time: new Date()
+                          }
+                        };
+                        const lastJourney = {
+                          entity: {
+                            coordinate: lastJourneyStart,
+                            type: "PERSON",
+                            occupancy: "NONE",
+                            distance: 0.3,
+                            fare: 0,
+                            time: 15
+                          },
+                          route: [lastJourneyStart, lastJourneyEnd],
+                          time: {
+                            coordinate: lastJourneyEnd,
+                            time: new Date()
+                          }
+                        };
+                        const journey = _.concat(firstJourney, busJourney, lastJourney);
                         return {
                           journey,
                           title: `Journey no ${index}`
