@@ -1,5 +1,6 @@
 import Immutable from 'immutable';
 import { createReducer } from '../utils';
+import _ from 'lodash';
 
 const initialState = Immutable.fromJS({
   journeys: [
@@ -193,7 +194,13 @@ const reducers = {
     currentJourney: null,
     currentLeg: null,
     journeys
-  })
+  }),
+  JOURNEY_SET_AUTO_BID: (state, { journey, leg, otp }) => state.updateIn(['journeys', journey, 'journey', leg, 'entity'], entity => {
+    return entity.set('bidMade', true).set('otp', otp);
+  }),
+  JOURNEY_SET_AUTO_ACCEPTED: (state, { journey, leg, driver_id }) => state.updateIn(['journeys', journey, 'journey', leg, 'entity'], entity => {
+    return entity.set('driverName', 'Auto Raja').set('vehicleNo', driver_id);
+  }),
 };
 
 export default createReducer(initialState, reducers);

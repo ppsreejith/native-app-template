@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { getRoutes } from '../utils/Routing';
+import { getRoutes, createBid } from '../utils/Routing';
 import Store from '../utils/Store';
 
 const time = 1556460882000;
@@ -150,4 +150,34 @@ export const fetchJourneys = ({
   }).catch(err => {
     console.log("Error is", err);
   });
+}
+
+export const bookAuto = (dispatch, getState) => {
+  const appState = getState().appState;
+  const metermele = _.parseInt(appState.get('meterMeleAmount'))
+
+  const currentJourney = appState.get('currentJourney');
+  const currentLeg = appState.get('currentLeg');
+  const journey = getState().journey.getIn(['journeys', currentJourney, 'journey', currentLeg]).toJS();
+  console.log("Journey is", journey);
+  createBid({
+    user_id: 1,
+    metermele,
+    fromLat: _.get(journey, ['route', 0, 'latitude']),
+    fromLng: _.get(journey, ['route', 0, 'longitude']),
+    from_address: 'Ahmedabad',
+    toLat: _.chain(journey).get('route').last().get('latitude').value(),
+    toLng: _.chain(journey).get('route').last().get('longitude').value(),
+    to_address: 'Ahmedabad',
+  }).then(res => {
+    console.log("Responses is", res);
+    dispatch({
+      type: "JOURNEY_SET_AUTO_BID",
+      payload: {
+        journey: currentJourney,
+        leg: currentLeg,
+        otp: res.otp
+      }
+    })
+  })
 }

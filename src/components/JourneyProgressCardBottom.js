@@ -5,6 +5,7 @@ import Carousel from 'react-native-snap-carousel';
 // import { JOURNEYS } from '../static/journeys';
 import { Icon, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
+import { bookAuto } from '../actions/Journey';
 
 const styles = {
   container: {
@@ -182,7 +183,7 @@ class JourneyProgressCardBottomComponent extends React.Component {
       else if (item.journey[legId].entity.type === 'AUTO') {
         const entity = this.props.journey.get('journeys').toJS()[this.props.appState.get('currentJourney')].journey[legId].entity;
 
-        if (entity.otp) {
+        if (entity.driver_id) {
           img = (<View style={[styles.modeImgsView]}>
             <Text style={{ fontWeight: '800', fontSize: 20, backgroundColor: '#f1c40f', paddingLeft: 5, paddingRight: 5, borderRadius: 5, textAlign: 'center' }}><Text style={{ fontSize: 10 }}>OTP{`\n`}</Text>{entity.otp}</Text>
             <Image source={require('../assets/AUTO.png')} style={[styles.modeImgs]} />
@@ -205,7 +206,7 @@ class JourneyProgressCardBottomComponent extends React.Component {
             <Image source={require('../assets/AUTO.png')} style={[styles.modeImgs]} />
           </View>);
            var actionButtons = (<View style={[{ alignItems: 'stretch', justifyContent: 'space-between', flexDirection: 'row', width: '100%', paddingTop: 10 }]}>
-           <Button title='Book Auto' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} />
+           <Button title='Book Auto' buttonStyle={{ backgroundColor: '#333' }} containerStyle={{ flex: 1 }} onPress={() => this.props.dispatch(bookAuto)}/>
          </View>)
         }
 
