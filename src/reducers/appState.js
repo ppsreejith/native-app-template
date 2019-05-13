@@ -32,12 +32,9 @@ const reducers = {
   APPSTATE_UPDATE_AUTO_BOOK: (state, { autoBookAuto }) => state.setIn(['autoBookAuto'], autoBookAuto),
   APPSTATE_UPDATE_ACTIVE_SCREEN: (state, { activeScreen }) => {
     if(activeScreen=='JOURNEY_CHOOSE'){
-      state.setIn(['currentJourneyBrowse'],0);
-      state.setIn(['currentJourney'], null);
-      state.setIn(['maxLegs'], null);
-      state.setIn(['currentLeg'], 0);  
+      state = state.setIn(['currentJourneyBrowse'],0).setIn(['currentJourney'], null).setIn(['maxLegs'], null).setIn(['currentLeg'], 0);  
     }
-    state.setIn(['activeScreen'], activeScreen)
+    return state.setIn(['activeScreen'], activeScreen)
   }
 };
 

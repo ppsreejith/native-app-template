@@ -52,19 +52,22 @@ const Map = ({entities, routes, times, style}) => {
     );
   });
   
-  const endsMarkers = _.map(routes, (route, key) => {
-    if(key==0){
+  const endMarker = _.map(routes, (route, key) => {
+    if(key==routes.length-1){
       const ent = {
-        coordinate : route[0][0],
-        type: 'HOME'
+        coordinate : route[0][route[0].length-1],
+        type: 'DESTINATION'
       };
     
       return(<EntityMarker key={key} {...ent} />);
     }
-    else if(key==routes.length-1){
+  });
+
+  const startMarker = _.map(routes, (route, key) => {
+    if(key==0){
       const ent = {
-        coordinate : route[0][route[0].length-1],
-        type: 'DESTINATION'
+        coordinate : route[0][0],
+        type: 'HOME'
       };
     
       return(<EntityMarker key={key} {...ent} />);
@@ -86,16 +89,19 @@ const Map = ({entities, routes, times, style}) => {
 
 
   const routeMarkers = _.map(routes, (route, key) => {
-    _.each(route[0], getMinMax);
-    // console.log('route',route);
-    var color='';
-    var dashpattern = null;
-    var strokeWidth = 3;
+    // _.each(route[0], getMinMax);
+    console.log('route',route);
+    let color='';
+    let dashpattern = null;
+    let strokeWidth = 3;
     if(route[1]=='AUTO'){
       color = '#2980b9';
+      dashpattern = null;
+
     }
     else if(route[1]=='BUS'){
       color = '#8e44ad';
+      dashpattern = null;
     }
     else if(route[1]=='PERSON'){
       color = '#d35400';
@@ -134,7 +140,9 @@ const Map = ({entities, routes, times, style}) => {
       {routeMarkers}
       {/* {timeMarkers} */}
       {stopMarkers}
-      {endsMarkers}
+      {endMarker}
+      {startMarker}
+
     </AnimatedMap>
   )
 }

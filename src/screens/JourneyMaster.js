@@ -106,7 +106,8 @@ class JourneyMaster extends React.Component {
     //     </View>);
     //   }
     // }
-
+    console.log("Journey is", journeys[currentJourneyBrowse].journey)
+    var toShowOnMap = '';
     if (activeScreen=='JOURNEY_CHOOSE') {
       componentToRender = (<View style={styles.container}>
         <JourneyCard></JourneyCard>
@@ -135,23 +136,28 @@ class JourneyMaster extends React.Component {
           <SettingsView></SettingsView>
         </Overlay>
       </View>);
+      toShowOnMap = journeys[currentJourneyBrowse].journey;
     }
     else if (activeScreen=='JOURNEY_PROGRESS') {
       componentToRender = (<View style={styles.container}>
           <JourneyProgressCardTop/>
           <JourneyProgressCardBottom/>
         </View>);
+        toShowOnMap = [journeys[currentJourney].journey[currentLeg]];
+        // toShowOnMap = journeys[currentJourneyBrowse].journey;
+        // console.log('PROGRESS',[{journey:[journeys[currentJourney].journey[currentLeg]]}]);
     }
     else if (activeScreen=='JOURNEY_END') {
       componentToRender = (<View style={styles.container}>
         <JourneyCompleteCard/>
       </View>);
-    }
-
+      // toShowOnMap = journeys[currentJourneyBrowse].journey;
+      toShowOnMap = journeys[currentJourney].journey;
+    } 
     return (
       <View style={styles.container}>
         {/* <JourneyMap journey={this.state.journey} /> */}
-        <JourneyMap journey={journeys[currentJourneyBrowse].journey} />
+        <JourneyMap journey={toShowOnMap} />
         {componentToRender}
       </View>
     )
