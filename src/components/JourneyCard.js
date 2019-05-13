@@ -197,7 +197,7 @@ class JourneyCardComponent extends React.Component {
         renderItem={this._renderItem(this)}
         sliderWidth={viewportWidth}
         onSnapToItem={(i)=>{
-          // console.log('snapped_to_',i);
+            console.log('snapped_to_',i);
           this.props.dispatch({
             type: 'APPSTATE_UPDATE_BROWSE',
             payload: {
