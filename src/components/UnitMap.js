@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import { StyleSheet, Text, View } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Polyline, Marker } from 'react-native-maps';
 import _ from 'lodash';
@@ -35,7 +36,7 @@ const getRegion = ({maxLat, minLat, maxLng, minLng}) => {
 
 const getUniqueKey = key => `${key}-${Date.now()}`
 
-const Map = ({entities, routes, times, style}) => {
+const Map = ({entities, routes, times, style, appState}) => {
   if(entities.length==0){
     return (
       <AnimatedMap
@@ -60,6 +61,16 @@ const Map = ({entities, routes, times, style}) => {
       <EntityMarker key={getUniqueKey(key)} {...entity} />
     );
   });
+
+  const userCoordinates = appState.get("userLocation").toJS();
+  getMinMax(userCoordinates);
+  const userMarker = (
+    <EntityMarker
+        key={getUniqueKey("userMarker")}
+        type="USER"
+        coordinate={userCoordinates}
+    />
+  );
   
   const endMarker = _.map(routes, (route, key) => {
     if(key==routes.length-1){
@@ -148,9 +159,10 @@ const Map = ({entities, routes, times, style}) => {
       {stopMarkers}
       {endMarker}
       {startMarker}
+      {userMarker}
 
     </AnimatedMap>
   )
 }
 
-export default Map;
+export default connect(({appState}) => ({appState}))(Map);

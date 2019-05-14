@@ -15,8 +15,12 @@ const initialState = Immutable.fromJS({
     EXPRESS: true,
     LOCAL: true,
   },
+  userLocation: {
+    latitude: 23.0120338,
+    longitude: 72.51075399999999,
+  },
   meterMeleAmount: '25'
-  });
+});
 
 const reducers = {
   APPSTATE_UPDATE_BROWSE: (state, { currentJourneyBrowse }) => state.setIn(['currentJourneyBrowse'], currentJourneyBrowse),
