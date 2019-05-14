@@ -79,6 +79,7 @@ setTimeout(() => {
 // update user location
 
 export const updateUserLocation = () => {
+  let nextTime = 1000;
   const startTime = Date.now();
   const id = Store.getState().locations.get("id");
   const next = (pollTime) => {
@@ -107,6 +108,9 @@ export const updateUserLocation = () => {
   let userLocation = appState.get('userLocation').toJS();
   if (_.isUndefined(userLocation.index)) {
     userLocation.index = 0;
+  }
+  if (userLocation.index === 0) {
+    nextTime = 10000;
   }
 
   // Prebooking
@@ -155,7 +159,7 @@ export const updateUserLocation = () => {
       userLocation
     }
   })
-  return next(1000);
+  return next(nextTime);
 };
 
 setTimeout(() => {
