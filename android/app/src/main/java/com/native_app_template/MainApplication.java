@@ -6,7 +6,6 @@ import com.facebook.react.ReactApplication;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.airbnb.android.react.maps.MapsPackage;
-import com.wix.interactable.Interactable;
 import com.github.xinthink.rnmk.ReactMaterialKitPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
@@ -32,7 +31,6 @@ public class MainApplication extends Application implements ReactApplication {
             new VectorIconsPackage(),
             new ReactNativeConfigPackage(),
             new MapsPackage(),
-            new Interactable(),
             new ReactMaterialKitPackage(),
             new RNGestureHandlerPackage()
       );
