@@ -26,6 +26,12 @@ function distance(lat1, lon1, lat2, lon2) {
   }
 }
 
+const templates = [
+  "Comfort optimized",
+  "Time optimized",
+  "Fare optimized"
+];
+
 export const fetchJourneys = ({
   fromLat,
   fromLng,
@@ -139,7 +145,7 @@ export const fetchJourneys = ({
                         const journey = _.concat(firstJourney, busJourney, lastJourney);
                         return {
                           journey,
-                          title: `Journey no ${index}`
+                          title: templates[index]
                         };
                       }).value();
     Store.dispatch({

@@ -76,6 +76,21 @@ const styles = {
 }
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
+const distanceTemplates = [
+  23,
+  30
+];
+
+const fareTemplates = [
+  35,
+  40
+];
+
+const timeTemplates = [
+  23,
+  34
+];
+
 class JourneyCardComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -86,9 +101,9 @@ class JourneyCardComponent extends React.Component {
 
   _renderItem(self) {
     return ({ item, index }) => {
-      const totalDistance = _.reduce(_.map(item.journey, ({ entity }) => entity.distance.toFixed(2)), (sum, n)=>sum + n, 0);
-      const totalFare = _.reduce(_.map(item.journey, ({ entity }) => entity.fare.toFixed(2)), (sum, n)=>sum + n, 0);
-      const totalTime = _.reduce(_.map(item.journey, ({ entity }) => entity.time), (sum, n)=>sum + n, 0);
+      const totalDistance = distanceTemplates[index];//_.reduce(_.map(item.journey, ({ entity }) => entity.distance.toFixed(2)), (sum, n)=>_.parseInt(sum) + n, 0);
+      const totalFare = fareTemplates[index];//_.reduce(_.map(item.journey, ({ entity }) => entity.fare.toFixed(2)), (sum, n)=>sum + n, 0);
+      const totalTime = timeTemplates[index];//_.reduce(_.map(item.journey, ({ entity }) => entity.time), (sum, n)=>sum + n, 0);
 
       const modes = _.map(item.journey, ({ entity }, id) => {
         var img = '';
