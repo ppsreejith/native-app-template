@@ -101,10 +101,9 @@ class JourneyCardComponent extends React.Component {
 
   _renderItem(self) {
     return ({ item, index }) => {
-      console.log('distance',_.map(item.journey, ({ entity }) => entity.distance.toFixed(2)));
-      const totalDistance = distanceTemplates[index];//_.reduce(_.map(item.journey, ({ entity }) => entity.distance.toFixed(2)), (sum, n)=>_.parseInt(sum) + n, 0);
-      const totalFare = fareTemplates[index];//_.reduce(_.map(item.journey, ({ entity }) => entity.fare.toFixed(2)), (sum, n)=>sum + n, 0);
-      const totalTime = timeTemplates[index];//_.reduce(_.map(item.journey, ({ entity }) => entity.time), (sum, n)=>sum + n, 0);
+      const totalDistance = _.reduce(_.map(item.journey, ({ entity }) => entity.distance), (sum, n)=>sum + parseFloat(n), 0).toFixed(2);
+      const totalFare = _.reduce(_.map(item.journey, ({ entity }) => entity.fare), (sum, n)=>sum + parseFloat(n),0).toFixed(0);
+      const totalTime = _.reduce(_.map(item.journey, ({ entity }) => entity.time), (sum, n)=>sum + parseFloat(n), 0).toFixed(0);
 
       const modes = _.map(item.journey, ({ entity }, id) => {
         var img = '';
@@ -136,9 +135,9 @@ class JourneyCardComponent extends React.Component {
             <View style={[styles.outerCircle, { backgroundColor: '#eee', position:'relative' }]}>
               {img}
               <View style={{position:'absolute', height: 17, width: 17, backgroundColor: ringColor,right: 0, borderRadius: 10}}></View>
-              <Text style={{position:'absolute', height: 20, width: 70, backgroundColor:'#333',bottom:-5,left:0, borderRadius: 5, textAlign: 'center', color: '#fff'}}>₹{entity.fare}</Text>
+              <Text style={{position:'absolute', height: 20, width: 70, backgroundColor:'#333',bottom:-5,left:0, borderRadius: 5, textAlign: 'center', color: '#fff'}}>₹{entity.fare.toFixed(0)}</Text>
             </View>
-            <Text style={{fontWeight: '800', paddingTop: 5, fontSize: 12}}>{entity.time} mins</Text>
+            <Text style={{fontWeight: '800', paddingTop: 5, fontSize: 12}}>{entity.time.toFixed(0)} mins</Text>
           </View>)
       });
 

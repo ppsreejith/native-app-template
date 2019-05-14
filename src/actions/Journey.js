@@ -35,7 +35,7 @@ function distanceToFare(distance, entityType){
     return distance*3;
   }
   else if(entityType=='AUTO'){
-    return Math.max(distance*10,15);
+    return Math.max(distance*10,15);  
   }
 }
 
@@ -46,8 +46,14 @@ function distanceToTime(distance, entityType){
     BUS: 25,
     AUTO: 30
   }
+  const constTimeMap = {
+    PERSON: 0,
+    BUS: 3,
+    AUTO: 5
+  }
   const speed = speedMap[entityType] || 5;
-  return (distance*60)/speed;
+  const constTime = constTimeMap[entityType] || 5;
+  return ((distance*60)/speed)+constTime;
 }
 
 
@@ -102,8 +108,8 @@ export const fetchJourneys = ({
                           const entity = {
                             type: "BUS",
                             coordinate: _.sample(route),
-                            from_stop: fromStop,
-                            to_stop: toStop,
+                            fromStop: fromStop,
+                            toStop: toStop,
                             occupancy: "NONE",
                             distance: totalDistance,
                             fare: distanceToFare(totalDistance, "BUS"),
@@ -132,7 +138,7 @@ export const fetchJourneys = ({
                           longitude: toLng
                         };
                         const firstJourneyFirstStop = fromDescription;
-                        const firstJourneyLastStop = _.chain(busJourney).first().get('entity.from_stop').value();
+                        const firstJourneyLastStop = _.chain(busJourney).first().get('entity.fromStop').value();
                         const autoKm = Store.getState().appState.get('maxWalkingValue');
                         const firstStopDistance = distance(
                           firstJourneyStart.latitude,
@@ -164,7 +170,7 @@ export const fetchJourneys = ({
                           lastJourneyEnd.latitude,
                           lastJourneyEnd.longitude,
                         );
-                        const lastJourneyFirstStop = _.chain(busJourney).last().get('entity.to_stop').value();
+                        const lastJourneyFirstStop = _.chain(busJourney).last().get('entity.toStop').value();
                         const lastJourneyLastStop = toDescription;
                         const lastEntityType = lastStopDistance > autoKm ? "AUTO" : "PERSON";
                         const lastJourney = {
