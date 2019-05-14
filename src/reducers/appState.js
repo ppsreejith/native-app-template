@@ -39,7 +39,8 @@ const reducers = {
       state = state.setIn(['currentJourneyBrowse'],0).setIn(['currentJourney'], null).setIn(['maxLegs'], null).setIn(['currentLeg'], 0);  
     }
     return state.setIn(['activeScreen'], activeScreen)
-  }
+  },
+  APPSTATE_UPDATE_USER_LOCATION: (state, { userLocation }) => state.setIn(['userLocation'], Immutable.fromJS(userLocation))
 };
 
 export default createReducer(initialState, reducers);
