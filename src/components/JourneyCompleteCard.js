@@ -155,7 +155,10 @@ class JourneyCompleteCardComponent extends React.Component {
           // console.log('YoyoPressed',j, this.state);
         }} />);
       }
-
+      const totalFare = _.reduce(_.map(this.state.journey, ({ entity }) => _.parseFloat(entity.distance).toFixed(2)), (sum, n)=>sum + n, 0);
+      const totalDistance = _.reduce(_.map(this.state.journey, ({ entity }) => _.parseFloat(entity.distance).toFixed(2)), (sum, n)=>sum + n, 0);
+      const savedFare = (totalDistance*20)-totalFare;
+      
       return (
         <View style={styles.slide}>
           <Text style={styles.title}>Journey Complete!</Text>
@@ -169,7 +172,7 @@ class JourneyCompleteCardComponent extends React.Component {
             </View>
             <View style={styles.colDiv}>
             <Icon name='cash' type='material-community' size={50} color='#fff' containerStyle={{ backgroundColor: '#333', padding: 10, borderRadius: 50 }} />
-            <Text  style={styles.subtitle}>150₹ Saved</Text>
+            <Text  style={styles.subtitle}>{savedFare}Rs. Saved</Text>
             </View>
             
           </View>

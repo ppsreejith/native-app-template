@@ -101,6 +101,7 @@ class JourneyCardComponent extends React.Component {
 
   _renderItem(self) {
     return ({ item, index }) => {
+      console.log('distance',_.map(item.journey, ({ entity }) => entity.distance.toFixed(2)));
       const totalDistance = distanceTemplates[index];//_.reduce(_.map(item.journey, ({ entity }) => entity.distance.toFixed(2)), (sum, n)=>_.parseInt(sum) + n, 0);
       const totalFare = fareTemplates[index];//_.reduce(_.map(item.journey, ({ entity }) => entity.fare.toFixed(2)), (sum, n)=>sum + n, 0);
       const totalTime = timeTemplates[index];//_.reduce(_.map(item.journey, ({ entity }) => entity.time), (sum, n)=>sum + n, 0);
