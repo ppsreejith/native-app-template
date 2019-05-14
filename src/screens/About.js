@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { getTheme } from 'react-native-material-kit';
-import Interactable from 'react-native-interactable';
 
 const theme = getTheme();
 
@@ -15,21 +14,6 @@ class About extends React.Component {
       <View style={styles.container}>
         <Text>About Page</Text>
         <Text>Name is { name }</Text>
-        <Interactable.View
-          horizontalOnly
-          snapPoints={[{ x: 0 }, { x: -200 }]}
-          onSnap={this.onDrawerSnap}
-        >
-          <View style={theme.cardStyle}>
-            <Image source={{ uri }} style={theme.cardImageStyle} />
-            <Text style={theme.cardTitleStyle}>Welcome</Text>
-            <Text style={theme.cardContentStyle}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Mauris sagittis pellentesque lacus eleifend lacinia...
-            </Text>
-            <Text style={theme.cardActionStyle}>My Action</Text>
-          </View>
-        </Interactable.View>
       </View>
     );
   }
