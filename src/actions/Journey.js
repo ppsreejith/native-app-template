@@ -26,6 +26,36 @@ function distance(lat1, lon1, lat2, lon2) {
   }
 }
 
+
+function distanceToFare(distance, entityType){
+  if(entityType=='PERSON'){
+    return 0;
+  }
+  else if(entityType=='BUS'){
+    return distance*3;
+  }
+  else if(entityType=='AUTO'){
+    return Math.max(distance*10,15);
+  }
+}
+
+
+function distanceToTime(distance, entityType){
+  
+  if(entityType=='PERSON'){
+    const speed = 5;
+  }
+  else if(entityType=='BUS'){
+    const speed = 25;
+  }
+  else if(entityType=='AUTO'){
+    const speed = 30;
+  }
+  return (distance*60)/speed;
+
+}
+
+
 const templates = [
   "Comfort optimized",
   "Time optimized",

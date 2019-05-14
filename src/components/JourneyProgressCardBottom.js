@@ -182,6 +182,7 @@ class JourneyProgressCardBottomComponent extends React.Component {
 
       else if (item.journey[legId].entity.type === 'AUTO') {
         const entity = this.props.journey.get('journeys').toJS()[this.props.appState.get('currentJourney')].journey[legId].entity;
+        console.log('entity',entity);
 
         if (entity.vehicleNo) {
           img = (<View style={[styles.modeImgsView]}>
@@ -257,7 +258,7 @@ class JourneyProgressCardBottomComponent extends React.Component {
                 </View>
                 <View style={[styles.rowDiv, styles.chip]}>
                   <Icon name='map-marker-path' type='material-community' color='#000' />
-                  <Text style={styles.subtitle}> {item.journey[legId].entity.distance} KMs</Text>
+                  <Text style={styles.subtitle}> {item.journey[legId].entity.distance.toFixed(2)} KMs</Text>
                 </View>
                 <View style={[styles.rowDiv, styles.chip]}>
                   <Icon name='currency-inr' type='material-community' color='#000' />
