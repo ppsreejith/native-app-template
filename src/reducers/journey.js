@@ -201,6 +201,9 @@ const reducers = {
   JOURNEY_SET_AUTO_ACCEPTED: (state, { journey, leg, driver_id }) => state.updateIn(['journeys', journey, 'journey', leg, 'entity'], entity => {
     return entity.set('driverName', 'Auto Raja').set('vehicleNo', driver_id);
   }),
+  JOURNEY_SET_ENTITY_LOCATION: (state, { journey, leg, coordinate }) => state.updateIn(['journeys', journey, 'journey', leg, 'entity'], entity => {
+    return entity.set('coordinate', coordinate);
+  }),
 };
 
 export default createReducer(initialState, reducers);

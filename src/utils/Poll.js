@@ -159,6 +159,12 @@ export const updateUserLocation = () => {
       userLocation
     }
   })
+  Store.dispatch({
+    type: 'JOURNEY_SET_ENTITY_LOCATION',
+    payload: {
+      coordinate: userLocation
+    }
+  })
   return next(nextTime);
 };
 
