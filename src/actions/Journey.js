@@ -41,18 +41,13 @@ function distanceToFare(distance, entityType){
 
 
 function distanceToTime(distance, entityType){
-  
-  if(entityType=='PERSON'){
-    const speed = 5;
+  const speedMap = {
+    PERSON: 5,
+    BUS: 25,
+    AUTO: 30
   }
-  else if(entityType=='BUS'){
-    const speed = 25;
-  }
-  else if(entityType=='AUTO'){
-    const speed = 30;
-  }
+  const speed = speedMap[entityType] || 5;
   return (distance*60)/speed;
-
 }
 
 
@@ -103,7 +98,7 @@ export const fetchJourneys = ({
                           }])).flatten().value()
                           const fromStop = _.chain(segments).first().get("FromStop.StopPointName").value();
                           const toStop = _.chain(segments).last().get("ToStop.StopPointName").value();
-                          const totalDistance = _.chain(segments).map(({RoutePath}) => _.get(RoutePath, "distance")).sum().value();
+                          const totalDistance = _.chain(segments).map(({RoutePath}) => _.get(RoutePath, "distance", 0)).sum().value()/1000;
                           const entity = {
                             type: "BUS",
                             coordinate: _.sample(route),
@@ -111,8 +106,8 @@ export const fetchJourneys = ({
                             to_stop: toStop,
                             occupancy: "NONE",
                             distance: totalDistance,
-                            fare: 0,
-                            time: 15
+                            fare: distanceToFare(totalDistance, "BUS"),
+                            time: distanceToTime(totalDistance, "BUS")
                           }
                           const time = {
                             coordinate: _.last(route),
@@ -145,16 +140,17 @@ export const fetchJourneys = ({
                           firstJourneyEnd.latitude,
                           firstJourneyEnd.longitude,
                         );
+                        const firstEntityType = firstStopDistance > autoKm ? "AUTO" : "PERSON";
                         const firstJourney = {
                           entity: {
                             coordinate: firstJourneyStart,
-                            type: firstStopDistance > autoKm ? "AUTO" : "PERSON",
+                            type: firstEntityType,
                             fromStop: firstJourneyFirstStop,
                             toStop: firstJourneyLastStop,
                             occupancy: "NONE",
                             distance: firstStopDistance,
-                            fare: 0,
-                            time: 15
+                            fare: distanceToFare(firstStopDistance, firstEntityType),
+                            time: distanceToTime(firstStopDistance, firstEntityType)
                           },
                           route: [firstJourneyStart, firstJourneyEnd],
                           time: {
@@ -170,16 +166,17 @@ export const fetchJourneys = ({
                         );
                         const lastJourneyFirstStop = _.chain(busJourney).last().get('entity.to_stop').value();
                         const lastJourneyLastStop = toDescription;
+                        const lastEntityType = lastStopDistance > autoKm ? "AUTO" : "PERSON";
                         const lastJourney = {
                           entity: {
                             coordinate: lastJourneyStart,
-                            type: lastStopDistance > autoKm ? "AUTO" : "PERSON",
+                            type: lastEntityType,
                             fromStop: lastJourneyFirstStop,
                             toStop: lastJourneyLastStop,
                             occupancy: "NONE",
                             distance: lastStopDistance,
-                            fare: 0,
-                            time: 15
+                            fare: distanceToFare(lastStopDistance, lastEntityType),
+                            time: distanceToTime(lastStopDistance, lastEntityType)
                           },
                           route: [lastJourneyStart, lastJourneyEnd],
                           time: {
