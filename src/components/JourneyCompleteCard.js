@@ -7,6 +7,7 @@ import Carousel from 'react-native-snap-carousel';
 import { Icon, Button } from 'react-native-elements'
 // import console = require('console');
 import {connect} from 'react-redux';
+// import console = require('console');
 
 const styles = {
   container: {
@@ -155,9 +156,10 @@ class JourneyCompleteCardComponent extends React.Component {
           // console.log('YoyoPressed',j, this.state);
         }} />);
       }
-      const totalFare = _.reduce(_.map(this.state.journey, ({ entity }) => _.parseFloat(entity.distance).toFixed(2)), (sum, n)=>sum + n, 0);
-      const totalDistance = _.reduce(_.map(this.state.journey, ({ entity }) => _.parseFloat(entity.distance).toFixed(2)), (sum, n)=>sum + n, 0);
+      const totalFare = _.reduce(_.map(this.state.journey[0].journey, ({ entity }) => entity.fare), (sum, n)=>sum + parseFloat(n), 0).toFixed(2);
+      const totalDistance = _.reduce(_.map(this.state.journey[0].journey, ({ entity }) => entity.distance), (sum, n)=>sum + parseFloat(n), 0).toFixed(2);
       const savedFare = (totalDistance*20)-totalFare;
+      console.log('final', totalFare, totalDistance, savedFare);
       
       return (
         <View style={styles.slide}>

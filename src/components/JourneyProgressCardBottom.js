@@ -6,6 +6,7 @@ import Carousel from 'react-native-snap-carousel';
 import { Icon, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bookAuto } from '../actions/Journey';
+// import console = require('console');
 
 const styles = {
   container: {
@@ -99,11 +100,35 @@ class JourneyProgressCardBottomComponent extends React.Component {
   }
   _renderItem(self) {
     return ({ item, index }) => {
+
+      console.log('locations', this.props.locations.get('selected').toJS());
+
       var img = '';
       var legId = this.props.appState.get('currentLeg');
       const maxLegs = this.props.appState.get('maxLegs');
 
-      console.log(legId, maxLegs);
+      //Hack
+      var fromLocation = '';
+      var toLocation = '';
+
+      if(legId==0){
+        fromLocation = this.props.locations.get('selected').toJS().from.description.split(',')[0];
+      }
+      else{
+        fromLocation = item.journey[legId].entity.fromStop;
+      }
+
+
+
+      if(legId==maxLegs){
+        toLocation = this.props.locations.get('selected').toJS().to.description.split(',')[0];
+      }
+      else{
+        toLocation = item.journey[legId].entity.toStop;
+      }
+
+
+      // console.log(legId, maxLegs);
 
       if (item.journey[legId].entity.type === 'PERSON') {
         img = (<View style={[styles.modeImgsView]}>
@@ -182,7 +207,7 @@ class JourneyProgressCardBottomComponent extends React.Component {
 
       else if (item.journey[legId].entity.type === 'AUTO') {
         const entity = this.props.journey.get('journeys').toJS()[this.props.appState.get('currentJourney')].journey[legId].entity;
-        console.log('entity',entity);
+        // console.log('entity',entity);
 
         if (entity.vehicleNo) {
           img = (<View style={[styles.modeImgsView]}>
@@ -248,13 +273,13 @@ class JourneyProgressCardBottomComponent extends React.Component {
             {img}
             <View style={[styles.colDiv, { borderLeftColor: '#ddd', borderLeftWidth: 1, padding: 10 }]}>
               <View style={[styles.colDiv, { justifyContent: 'center', alignItems: 'flex-start', width: '100%' }]}>
-                <Text ellipsizeMode={'tail'} numberOfLines={1}><Text style={styles.qText}>From : </Text>{item.journey[legId].entity.from}</Text>
-                <Text ellipsizeMode={'tail'} numberOfLines={1}><Text style={styles.qText}>To : </Text>{item.journey[legId].entity.to}</Text>
+                <Text ellipsizeMode={'tail'} numberOfLines={1}><Text style={styles.qText}>From : </Text>{fromLocation}</Text>
+                <Text ellipsizeMode={'tail'} numberOfLines={1}><Text style={styles.qText}>To : </Text>{toLocation}</Text>
               </View>
               <View style={[styles.rowDiv, { justifyContent: 'space-between', width: '100%', paddingTop: 10 }]}>
                 <View style={[styles.rowDiv, styles.chip]}>
                   <Icon name='clock-outline' type='material-community' color='#000' />
-                  <Text style={styles.subtitle}> {item.journey[legId].entity.time} Mins</Text>
+                  <Text style={styles.subtitle}> {item.journey[legId].entity.time.toFixed(0)} Mins</Text>
                 </View>
                 <View style={[styles.rowDiv, styles.chip]}>
                   <Icon name='map-marker-path' type='material-community' color='#000' />
@@ -262,7 +287,7 @@ class JourneyProgressCardBottomComponent extends React.Component {
                 </View>
                 <View style={[styles.rowDiv, styles.chip]}>
                   <Icon name='currency-inr' type='material-community' color='#000' />
-                  <Text style={styles.subtitle}>{item.journey[legId].entity.fare} Rs</Text>
+                  <Text style={styles.subtitle}>{item.journey[legId].entity.fare.toFixed(0)} Rs</Text>
                 </View>
               </View>
               {actionButtons}
@@ -295,4 +320,4 @@ class JourneyProgressCardBottomComponent extends React.Component {
   }
 }
 
-export const JourneyProgressCardBottom = connect(({ journey, appState }) => ({ journey, appState }))(JourneyProgressCardBottomComponent);
+export const JourneyProgressCardBottom = connect(({ journey, appState, locations }) => ({ journey, appState, locations }))(JourneyProgressCardBottomComponent);
