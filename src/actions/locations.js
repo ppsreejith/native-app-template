@@ -28,8 +28,10 @@ export const selectPlace = (place, reason) => (dispatch, getState) => {
       });
       let fromLat = 0;
       let fromLng = 0;
+      let fromDescription = '';
       let toLat = 0;
       let toLng = 0;
+      let toDescription = '';
       let transition = false;
       if (reason == 'from' && !_.isEmpty(locations.getIn(['selected', 'to']))) {
         transition = true;
@@ -50,7 +52,9 @@ export const selectPlace = (place, reason) => (dispatch, getState) => {
           fromLat,
           fromLng,
           toLat,
-          toLng
+          toLng,
+          fromDescription,
+          toDescription
         });
         dispatch({
           type: "LOCATION_INITIALIZE",

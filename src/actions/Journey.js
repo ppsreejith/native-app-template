@@ -35,8 +35,10 @@ const templates = [
 export const fetchJourneys = ({
   fromLat,
   fromLng,
+  fromDescription,
   toLat,
-  toLng
+  toLng,
+  toDescription
 }) => {
   getRoutes({
     fromLat,
@@ -69,11 +71,16 @@ export const fetchJourneys = ({
                             latitude: _.get(ToStop, "Location.Latitude"),
                             longitude: _.get(ToStop, "Location.Longitude"),
                           }])).flatten().value()
+                          const fromStop = _.chain(segments).first().get("FromStop.StopPointName").value();
+                          const toStop = _.chain(segments).last().get("ToStop.StopPointName").value();
+                          const totalDistance = _.chain(segments).map(({RoutePath}) => _.get(RoutePath, "distance")).sum().value();
                           const entity = {
                             type: "BUS",
                             coordinate: _.sample(route),
+                            from_stop: fromStop,
+                            to_stop: toStop,
                             occupancy: "NONE",
-                            distance: 0.3,
+                            distance: totalDistance,
                             fare: 0,
                             time: 15
                           }
@@ -99,6 +106,8 @@ export const fetchJourneys = ({
                           latitude: toLat,
                           longitude: toLng
                         };
+                        const firstJourneyFirstStop = fromDescription;
+                        const firstJourneyLastStop = _.chain(busJourney).first().get('entity.from_stop').value();
                         const autoKm = Store.getState().appState.get('maxWalkingValue');
                         const firstStopDistance = distance(
                           firstJourneyStart.latitude,
@@ -110,6 +119,8 @@ export const fetchJourneys = ({
                           entity: {
                             coordinate: firstJourneyStart,
                             type: firstStopDistance > autoKm ? "AUTO" : "PERSON",
+                            fromStop: firstJourneyFirstStop,
+                            toStop: firstJourneyLastStop,
                             occupancy: "NONE",
                             distance: firstStopDistance,
                             fare: 0,
@@ -127,10 +138,14 @@ export const fetchJourneys = ({
                           lastJourneyEnd.latitude,
                           lastJourneyEnd.longitude,
                         );
+                        const lastJourneyFirstStop = _.chain(busJourney).last().get('entity.to_stop').value();
+                        const lastJourneyLastStop = toDescription;
                         const lastJourney = {
                           entity: {
                             coordinate: lastJourneyStart,
                             type: lastStopDistance > autoKm ? "AUTO" : "PERSON",
+                            fromStop: lastJourneyFirstStop,
+                            toStop: lastJourneyLastStop,
                             occupancy: "NONE",
                             distance: lastStopDistance,
                             fare: 0,
