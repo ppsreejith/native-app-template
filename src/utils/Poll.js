@@ -162,6 +162,8 @@ export const updateUserLocation = () => {
   Store.dispatch({
     type: 'JOURNEY_SET_ENTITY_LOCATION',
     payload: {
+      journey: currentJourney,
+      leg: currentLeg,
       coordinate: userLocation
     }
   })
