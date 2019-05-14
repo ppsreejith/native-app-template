@@ -37,15 +37,19 @@ export const selectPlace = (place, reason) => (dispatch, getState) => {
         transition = true;
         fromLat = coordinates.lat;
         fromLng = coordinates.lng;
+        fromDescription = description;
         toLat = locations.getIn(['selected', 'to', 'coordinates', 'lat']);
         toLng = locations.getIn(['selected', 'to', 'coordinates', 'lng']);
+        toDescription = locations.getIn(['selected', 'to', 'description']);
       }
       if (reason == 'to' && !_.isEmpty(locations.getIn(['selected', 'from']))) {
         transition = true;
         toLat = coordinates.lat;
         toLng = coordinates.lng;
+        toDescription = description;
         fromLat = locations.getIn(['selected', 'from', 'coordinates', 'lat']);
         fromLng = locations.getIn(['selected', 'from', 'coordinates', 'lng']);
+        fromDescription = locations.getIn(['selected', 'from', 'description']);
       }
       if (transition) {
         fetchJourneys({

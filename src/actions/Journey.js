@@ -219,10 +219,10 @@ export const bookAuto = (dispatch, getState) => {
     metermele,
     fromLat: _.get(journey, ['route', 0, 'latitude']),
     fromLng: _.get(journey, ['route', 0, 'longitude']),
-    from_address: 'Ahmedabad',
+    from_address: _.get(journey, 'entity.fromStop'),
     toLat: _.chain(journey).get('route').last().get('latitude').value(),
     toLng: _.chain(journey).get('route').last().get('longitude').value(),
-    to_address: 'Ahmedabad',
+    to_address: _.get(journey, 'entity.toStop'),
   }).then(res => {
     console.log("Responses is", res);
     dispatch({
