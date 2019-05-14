@@ -155,7 +155,7 @@ export const updateUserLocation = () => {
       userLocation
     }
   })
-  return next(200);
+  return next(1000);
 };
 
 setTimeout(() => {
