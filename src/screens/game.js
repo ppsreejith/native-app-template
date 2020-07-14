@@ -4,12 +4,16 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import { ButtonGroup, Icon, Image } from 'react-native-elements';
 import Navigation from '../utils/Navigation';
 import Network from '../utils/Network';
+import _ from "lodash";
 
 class Game extends React.Component {
   constructor() {
     super()
     this.state = {
-      selectedIndex: 0
+        selectedIndex: 0,
+        data: {'username' : "vivek", "match_id": "ABC"},
+        ball: 0,
+        state: "waiting",
     }
     this.updateIndex = this.updateIndex.bind(this)
   }
@@ -19,13 +23,12 @@ class Game extends React.Component {
 
   syncWithMaster(){
       const IP = 'http://10.105.16.47:5000';
-      const data = {'username' : "vivek", "match_id": "ABC","state":"waiting"};
       Network({
         method:'GET',
         url: '/sync', 
         headers: '',
         baseURL: IP,
-        data: data
+          data: _.extend({}, this.state.data, {ball: this.state.ball}, {state: this.state.})
       }).then((response) => {
         console.log(response);
 
